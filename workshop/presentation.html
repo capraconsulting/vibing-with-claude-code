@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Workshop — Build Your Own Project in 90 Minutes</title>
+
+    <!-- Fonts: JetBrains Mono for code, DM Sans for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES — TERMINAL GREEN THEME
+           =========================================== */
+        :root {
+            /* Colors */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #161616;
+            --bg-code: #0d1117;
+            --border: #1a2a1a;
+            --text-primary: #d4d4d4;
+            --text-secondary: #7a7a7a;
+            --text-muted: #4a4a4a;
+            --green: #00ff41;
+            --green-dim: #00cc33;
+            --green-glow: rgba(0, 255, 65, 0.15);
+            --green-glow-strong: rgba(0, 255, 65, 0.3);
+            --green-dark: #003d0f;
+            --amber: #ffb000;
+            --cyan: #00d4ff;
+            --red: #ff4444;
+
+            /* Typography — all clamp() for responsive scaling */
+            --font-display: 'JetBrains Mono', monospace;
+            --font-body: 'DM Sans', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --title-size: clamp(1.8rem, 5vw, 3.5rem);
+            --h2-size: clamp(1.4rem, 3.5vw, 2.5rem);
+            --h3-size: clamp(1rem, 2.5vw, 1.5rem);
+            --body-size: clamp(0.75rem, 1.4vw, 1.05rem);
+            --small-size: clamp(0.65rem, 1vw, 0.85rem);
+            --code-size: clamp(0.65rem, 1.2vw, 0.9rem);
+
+            /* Spacing — all clamp() for responsive scaling */
+            --slide-padding: clamp(1.5rem, 4vw, 4rem);
+            --content-gap: clamp(0.75rem, 2vw, 1.75rem);
+            --element-gap: clamp(0.3rem, 1vw, 0.75rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --duration: 0.6s;
+        }
+
+        /* ===========================================
+           RESET & BASE
+           =========================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100%;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===========================================
+           SLIDE CONTAINER
+           Each slide = exactly one viewport height
+           =========================================== */
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: var(--slide-padding);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            gap: var(--content-gap);
+        }
+
+        /* ===========================================
+           SECTION LABEL — top-left badge
+           =========================================== */
+        .section-label {
+            position: absolute;
+            top: clamp(0.75rem, 2vw, 1.5rem);
+            left: var(--slide-padding);
+            font-family: var(--font-code);
+            font-size: var(--small-size);
+            color: var(--green-dim);
+            opacity: 0.6;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-size: var(--title-size);
+            font-weight: 700;
+            color: var(--green);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            text-shadow: 0 0 30px var(--green-glow), 0 0 60px rgba(0,255,65,0.08);
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-weight: 700;
+            color: var(--green);
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .dim {
+            color: var(--text-secondary);
+        }
+
+        strong, b {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           LISTS
+           =========================================== */
+        ul, ol {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--element-gap);
+        }
+
+        ul li {
+            padding-left: 1.5em;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-family: var(--font-code);
+            font-weight: 700;
+        }
+
+        ol {
+            counter-reset: item;
+        }
+
+        ol li {
+            counter-increment: item;
+            padding-left: 2em;
+            position: relative;
+        }
+
+        ol li::before {
+            content: counter(item) '.';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-family: var(--font-code);
+            font-weight: 700;
+        }
+
+        /* ===========================================
+           CODE BLOCKS
+           =========================================== */
+        pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: clamp(0.5rem, 1.5vw, 1rem) clamp(0.75rem, 2vw, 1.25rem);
+            overflow: hidden;
+            position: relative;
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--green);
+            opacity: 0.5;
+        }
+
+        code {
+            font-family: var(--font-code);
+            font-size: var(--code-size);
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .code-label {
+            font-family: var(--font-code);
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem);
+        }
+
+        .code-good { border-color: var(--green-dim); }
+        .code-good::before { background: var(--green); }
+
+        .code-bad { border-color: var(--red); }
+        .code-bad::before { background: var(--red); }
+
+        /* Inline code */
+        .inline-code {
+            font-family: var(--font-code);
+            font-size: 0.9em;
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.1em 0.4em;
+            color: var(--green);
+        }
+
+        /* ===========================================
+           TABLES
+           =========================================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--body-size);
+        }
+
+        th {
+            font-family: var(--font-code);
+            font-size: var(--small-size);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--green-dim);
+            text-align: left;
+            padding: clamp(0.3rem, 0.8vw, 0.6rem) clamp(0.5rem, 1vw, 1rem);
+            border-bottom: 1px solid var(--green-dim);
+        }
+
+        td {
+            padding: clamp(0.3rem, 0.8vw, 0.6rem) clamp(0.5rem, 1vw, 1rem);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ===========================================
+           CARDS / GRID
+           =========================================== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: clamp(0.75rem, 1.5vw, 1.25rem);
+        }
+
+        .card h3 {
+            font-size: var(--body-size);
+            color: var(--green);
+            margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem);
+        }
+
+        .card p {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ===========================================
+           TWO-COLUMN LAYOUT
+           =========================================== */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1rem, 3vw, 2.5rem);
+            align-items: start;
+        }
+
+        @media (max-width: 700px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===========================================
+           SPECIAL SLIDE TYPES
+           =========================================== */
+
+        /* Title slide */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .title-slide .slide-content {
+            align-items: center;
+            max-width: 900px;
+        }
+
+        /* Section title slide */
+        .section-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .section-slide .slide-content {
+            align-items: center;
+        }
+
+        .section-slide .section-number {
+            font-family: var(--font-code);
+            font-size: clamp(0.75rem, 1.5vw, 1rem);
+            color: var(--green-dim);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Hands-on slide */
+        .hands-on-slide {
+            border-left: 3px solid var(--amber);
+        }
+
+        .hands-on-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5em;
+            font-family: var(--font-code);
+            font-size: var(--small-size);
+            color: var(--amber);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* ===========================================
+           BLINKING CURSOR
+           =========================================== */
+        .cursor {
+            display: inline-block;
+            width: 0.55em;
+            height: 1.1em;
+            background: var(--green);
+            margin-left: 0.15em;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* ===========================================
+           TERMINAL PROMPT DECORATION
+           =========================================== */
+        .prompt {
+            font-family: var(--font-code);
+            font-size: var(--code-size);
+            color: var(--text-muted);
+        }
+
+        .prompt .path {
+            color: var(--cyan);
+        }
+
+        .prompt .dollar {
+            color: var(--green);
+        }
+
+        /* ===========================================
+           BACKGROUND EFFECTS
+           =========================================== */
+
+        /* Scanline overlay */
+        .slide::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.03) 2px,
+                rgba(0,0,0,0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Grid pattern for certain slides */
+        .grid-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        /* Glow orb behind title */
+        .glow-orb {
+            position: absolute;
+            width: clamp(200px, 40vw, 500px);
+            height: clamp(200px, 40vw, 500px);
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .reveal:nth-child(2) { transition-delay: 0.15s; }
+        .reveal:nth-child(3) { transition-delay: 0.25s; }
+        .reveal:nth-child(4) { transition-delay: 0.35s; }
+        .reveal:nth-child(5) { transition-delay: 0.45s; }
+        .reveal:nth-child(6) { transition-delay: 0.55s; }
+
+        .reveal-fast {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s var(--ease-out-expo),
+                        transform 0.4s var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal-fast {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Type-in animation for code */
+        @keyframes typeIn {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green-glow-strong);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(0.5rem, 1.5vw, 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1000;
+        }
+
+        .nav-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .nav-dot:hover {
+            background: var(--green-dim);
+            transform: scale(1.5);
+        }
+
+        .nav-dot.active {
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green-glow-strong);
+            transform: scale(1.3);
+        }
+
+        .nav-dot.section-start {
+            width: 8px;
+            height: 8px;
+        }
+
+        /* ===========================================
+           SLIDE COUNTER
+           =========================================== */
+        .slide-counter {
+            position: fixed;
+            bottom: clamp(0.5rem, 1.5vw, 1.5rem);
+            right: clamp(0.75rem, 2vw, 2rem);
+            font-family: var(--font-code);
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            z-index: 1000;
+        }
+
+        /* ===========================================
+           KEYBOARD HINT
+           =========================================== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: clamp(0.5rem, 1.5vw, 1.5rem);
+            left: clamp(0.75rem, 2vw, 2rem);
+            font-family: var(--font-code);
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            opacity: 0.5;
+            z-index: 1000;
+            transition: opacity 1s ease;
+        }
+
+        .keyboard-hint.hidden {
+            opacity: 0;
+        }
+
+        kbd {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 0.1em 0.4em;
+            font-family: var(--font-code);
+            font-size: 0.85em;
+        }
+
+        /* ===========================================
+           SPEAKER NOTES OVERLAY
+           =========================================== */
+        .notes-overlay {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-height: 35vh;
+            background: rgba(0,0,0,0.95);
+            border-top: 1px solid var(--green-dim);
+            padding: 1rem 2rem;
+            overflow-y: auto;
+            z-index: 2000;
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .notes-overlay.visible {
+            display: block;
+        }
+
+        .notes-overlay h4 {
+            font-family: var(--font-code);
+            color: var(--green-dim);
+            font-size: var(--small-size);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===========================================
+           RESPONSIVE BREAKPOINTS
+           =========================================== */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(1rem, 3vw, 2.5rem);
+                --content-gap: clamp(0.5rem, 1.5vw, 1.25rem);
+                --title-size: clamp(1.5rem, 4.5vw, 2.5rem);
+                --h2-size: clamp(1.2rem, 3vw, 2rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.4rem, 1vw, 0.75rem);
+                --title-size: clamp(1.2rem, 4vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+
+            .nav-dots, .keyboard-hint {
+                display: none;
+            }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3.5vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --title-size: clamp(1.4rem, 7vw, 2.5rem);
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+
+            html {
+                scroll-behavior: auto;
+            }
+        }
+
+        /* Z-index layer for slide content above scanlines */
+        .slide-content, .section-label {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Navigation dots (generated by JS) -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- Slide counter -->
+<div class="slide-counter" id="slideCounter">1 / 50</div>
+
+<!-- Keyboard hint -->
+<div class="keyboard-hint" id="keyboardHint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> to navigate &middot; <kbd>N</kbd> speaker notes</div>
+
+<!-- Speaker notes overlay -->
+<div class="notes-overlay" id="notesOverlay">
+    <h4>Speaker Notes</h4>
+    <div id="notesContent"></div>
+</div>
+
+
+<!-- =============================================
+     SECTION 1: WELCOME & BRAINSTORM
+     ============================================= -->
+
+<!-- Slide 1: Title -->
+<section class="slide title-slide grid-bg" data-section="welcome"
+    data-notes="Welcome everyone! Today you're going to learn Claude Code by building something you actually care about — your own hobby project. By the end of this workshop you'll have a working app with a backend API, a custom MCP server that lets Claude talk to your data, and the skills to keep building with Claude Code after today.">
+    <div class="glow-orb" style="top: 30%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content">
+        <div class="reveal" style="margin-bottom: clamp(0.5rem, 1vw, 1rem);">
+            <span class="prompt"><span class="path">~/workshop</span> <span class="dollar">$</span> claude</span>
+        </div>
+        <h1 class="reveal">Claude Code Workshop<span class="cursor"></span></h1>
+        <p class="subtitle reveal">Build your own project in 90 minutes</p>
+    </div>
+</section>
+
+<!-- Slide 2: Why a Hobby Project? -->
+<section class="slide" data-section="welcome"
+    data-notes="Research consistently shows that motivation drives learning. If you're building a todo app tutorial you don't care about, you won't push through the tricky parts. But if you're building a workout tracker because you actually track your workouts, you'll engage more deeply. Your project idea carries through the entire workshop.">
+    <span class="section-label">01 / brainstorm</span>
+    <div class="slide-content">
+        <h2 class="reveal">Why a Hobby Project?</h2>
+        <ul class="reveal">
+            <li>You learn tools best when you <strong>care about the outcome</strong></li>
+            <li>You'll build something <strong>you actually want</strong></li>
+            <li>Same project through the whole workshop — each section adds depth</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Slide 3: Your Project Should Be -->
+<section class="slide" data-section="welcome"
+    data-notes="Don't hold back — you'd be surprised how much you can build in 60 minutes with Claude Code. We want a real app: frontend, backend API, data storage. Not just a static HTML page. The key is being concrete.">
+    <span class="section-label">01 / brainstorm</span>
+    <div class="slide-content">
+        <h2 class="reveal">Your Project Should Be...</h2>
+        <ul class="reveal">
+            <li><strong>Something you personally want</strong> — motivation matters</li>
+            <li><strong>Ambitious enough</strong> — frontend + backend API + data model</li>
+            <li><strong>Concrete</strong> — "a tracker that does X" not "an app for productivity"</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Slide 4: What Sparks an Idea -->
+<section class="slide" data-section="welcome"
+    data-notes="Take a minute to think about these questions. You don't need to answer all of them — just find the one that sparks something. Common categories: tracking things, planning things, and tools for hobbies.">
+    <span class="section-label">01 / brainstorm</span>
+    <div class="slide-content">
+        <h2 class="reveal">Brainstorm: What Sparks an Idea?</h2>
+        <ul class="reveal">
+            <li>What hobbies do you spend time on outside work?</li>
+            <li>What repetitive task do you wish was automated?</li>
+            <li>What spreadsheet could be a simple app?</li>
+            <li>What would you show off to friends?</li>
+            <li>What side project idea has been in your notes for months?</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Slide 5: Example Ideas -->
+<section class="slide" data-section="welcome"
+    data-notes="These are just starting points. Feel free to pick one or come up with something different. Notice each idea has multiple features — that's intentional. We want projects with enough depth to have interesting data models, API endpoints, and questions an LLM could usefully answer.">
+    <span class="section-label">01 / brainstorm</span>
+    <div class="slide-content">
+        <h2 class="reveal">Example Ideas</h2>
+        <table class="reveal">
+            <thead>
+                <tr><th>Idea</th><th>What it does</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Workout tracker</td><td>Log exercises, progress charts, personal records</td></tr>
+                <tr><td>Recipe scaler</td><td>Adjust serving counts, convert units, save favorites</td></tr>
+                <tr><td>Expense splitter</td><td>Group expenses, balances, "who pays whom"</td></tr>
+                <tr><td>Reading list</td><td>Search books via API, ratings, notes, filters</td></tr>
+                <tr><td>Habit tracker</td><td>Daily check-ins, streaks, heatmap calendar</td></tr>
+                <tr><td>Meal planner</td><td>Weekly meals, auto grocery list, scale recipes</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Slide 6: Think Through Your Idea -->
+<section class="slide" data-section="welcome"
+    data-notes="This is the most important brainstorm step. Think about DATA (core entities and relationships), API (CRUD endpoints), and LLM (what would Claude do with access to your data?). If the LLM answer is interesting, you have a good project.">
+    <span class="section-label">01 / brainstorm</span>
+    <div class="slide-content">
+        <h2 class="reveal">Think Through Your Idea</h2>
+        <ol class="reveal">
+            <li><strong>The data</strong> — What "things" does your app manage? How do they relate?</li>
+            <li><strong>The API</strong> — What endpoints would you need? (GET, POST, PUT, DELETE)</li>
+            <li><strong>The LLM angle</strong> — What would you ask Claude if it had access to your data?</li>
+        </ol>
+    </div>
+</section>
+
+<!-- Slide 7: Your Turn — Brainstorm -->
+<section class="slide hands-on-slide" data-section="welcome"
+    data-notes="Give participants about 10 minutes here. Walk the room and help anyone who's stuck. Common issues: idea too vague, idea too small, can't decide. Anyone ready early can start reading the next section.">
+    <span class="section-label">01 / brainstorm</span>
+    <div class="slide-content">
+        <div class="hands-on-badge reveal">// hands-on — 10 min</div>
+        <h2 class="reveal">Your Turn: Brainstorm</h2>
+        <ol class="reveal">
+            <li>Pick a project idea</li>
+            <li>Think about the data model and API</li>
+            <li>Think about what Claude could do with your data</li>
+            <li>Make sure your project directory is ready: <span class="inline-code">cd ~/my-workshop-project</span></li>
+        </ol>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SECTION 2: FIRST STEPS
+     ============================================= -->
+
+<!-- Slide 8: Section Title -->
+<section class="slide section-slide grid-bg" data-section="first-steps"
+    data-notes="Now we go from idea to working code. This is the longest hands-on section — 15 minutes of building. The goal: a running app with a frontend and backend API.">
+    <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content">
+        <span class="section-number reveal">Section 02</span>
+        <h1 class="reveal">First Steps with Claude Code</h1>
+        <p class="subtitle reveal">Getting from idea to running app</p>
+    </div>
+</section>
+
+<!-- Slide 9: Starting Claude Code -->
+<section class="slide" data-section="first-steps"
+    data-notes="Claude Code is a terminal-based tool. You launch it in your project directory and talk to it. It can see your files, run shell commands, create new files, and edit existing ones. Everything Claude does is visible to you.">
+    <span class="section-label">02 / first steps</span>
+    <div class="slide-content">
+        <h2 class="reveal">Starting Claude Code</h2>
+        <pre class="reveal"><code><span style="color:var(--cyan)">~/my-project</span> <span style="color:var(--green)">$</span> claude</code></pre>
+        <ul class="reveal">
+            <li>Runs in your terminal</li>
+            <li>Can read/write files, run commands, search code</li>
+            <li>Everything happens through conversation</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Slide 10: Terminal Setup -->
+<section class="slide" data-section="first-steps"
+    data-notes="A few terminal tweaks make a big difference. Shift+Enter for newlines is the most useful one — run /terminal-setup in VS Code or Alacritty to set it up automatically. Vim users will love /vim mode.">
+    <span class="section-label">02 / first steps</span>
+    <div class="slide-content">
+        <h2 class="reveal">Terminal Setup</h2>
+        <table class="reveal">
+            <thead>
+                <tr><th>Setting</th><th>How</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Line breaks</strong></td><td><span class="inline-code">\</span> + Enter, or Shift+Enter (iTerm2, Ghostty, Kitty)</td></tr>
+                <tr><td><strong>Shift+Enter setup</strong></td><td>Run <span class="inline-code">/terminal-setup</span> (VS Code, Alacritty, Warp)</td></tr>
+                <tr><td><strong>Vim mode</strong></td><td><span class="inline-code">/vim</span> to toggle keybindings</td></tr>
+                <tr><td><strong>Theme</strong></td><td><span class="inline-code">/config</span> to match your terminal</td></tr>
+                <tr><td><strong>Notifications</strong></td><td>iTerm2 alerts or custom notification hooks</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Slide 11: Permission Modes -->
+<section class="slide" data-section="first-steps"
+    data-notes="DEFAULT is safe. ACCEPT EDITS is the productivity sweet spot. PLAN MODE is read-only. You cycle through them with Shift+Tab.">
+    <span class="section-label">02 / first steps</span>
+    <div class="slide-content">
+        <h2 class="reveal">Permission Modes</h2>
+        <p class="reveal dim">Press <strong>Shift+Tab</strong> to cycle:</p>
+        <table class="reveal">
+            <thead>
+                <tr><th>Mode</th><th>What Claude can do</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Default</strong></td><td>Asks permission for each edit and command</td></tr>
+                <tr><td><strong>Accept Edits</strong></td><td>Auto-accepts file edits, asks for commands</td></tr>
+                <tr><td><strong>Plan Mode</strong></td><td>Read-only — can only read and think</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Slide 11: Choosing a Model -->
+<section class="slide" data-section="first-steps"
+    data-notes="Opus is the most capable but slower. Sonnet is the best balance for daily work. Haiku is fast and cheap for simple things. On Opus, you also get effort levels.">
+    <span class="section-label">02 / first steps</span>
+    <div class="slide-content">
+        <h2 class="reveal">Choosing a Model</h2>
+        <p class="reveal dim">Use <span class="inline-code">/model</span> to switch:</p>
+        <table class="reveal">
+            <thead>
+                <tr><th>Model</th><th>Best for</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Opus</strong></td><td>Complex reasoning, architecture, hard bugs</td></tr>
+                <tr><td><strong>Sonnet</strong></td><td>Daily coding, balanced speed and quality</td></tr>
+                <tr><td><strong>Haiku</strong></td><td>Quick answers, simple tasks</td></tr>
+            </tbody>
+        </table>
+        <p class="reveal dim" style="font-size:var(--small-size)">Opus has <strong>effort levels</strong> (low / medium / high) — adjust with arrow keys in <span class="inline-code">/model</span></p>
+    </div>
+</section>
+
+<!-- Slide 12: Safety Controls -->
+<section class="slide" data-section="first-steps"
+    data-notes="You're always in control. Press Esc immediately if Claude is going wrong. /rewind is like undo. /rename is useful for bookmarking sessions.">
+    <span class="section-label">02 / first steps</span>
+    <div class="slide-content">
+        <h2 class="reveal">Safety Controls</h2>
+        <ul class="reveal">
+            <li><strong>Esc</strong> — Stop Claude mid-generation</li>
+            <li><strong>Reject changes</strong> — Deny file edits or commands</li>
+            <li><span class="inline-code">/rewind</span> — Undo the last turn, try a different approach</li>
+            <li><span class="inline-code">/rename</span> — Name your session for later</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Slide 14: Checkpointing -->
+<section class="slide" data-section="first-steps"
+    data-notes="Claude automatically checkpoints before every edit. Press Esc twice to open the rewind menu — you'll see every prompt from your session. You can restore code, conversation, or both. This is like local undo for AI edits. Note: only tracks Claude's file edits, not bash commands like rm or mv.">
+    <span class="section-label">02 / first steps</span>
+    <div class="slide-content">
+        <h2 class="reveal">Checkpointing</h2>
+        <p class="reveal dim">Claude auto-checkpoints before every edit — press <strong>Esc + Esc</strong> or <span class="inline-code">/rewind</span>:</p>
+        <table class="reveal">
+            <thead>
+                <tr><th>Action</th><th>What it does</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Restore code + conversation</strong></td><td>Revert both files and chat</td></tr>
+                <tr><td><strong>Restore conversation</strong></td><td>Rewind chat, keep current code</td></tr>
+                <tr><td><strong>Restore code</strong></td><td>Revert files, keep conversation</td></tr>
+                <tr><td><strong>Summarize from here</strong></td><td>Compress everything after this point (frees context)</td></tr>
+            </tbody>
+        </table>
+        <p class="reveal dim" style="font-size:var(--small-size)">Think of checkpoints as <strong>local undo</strong> — git is your <strong>permanent history</strong></p>
+    </div>
+</section>
+
+<!-- Slide 15: Sessions -->
+<section class="slide" data-section="first-steps"
+    data-notes="Sessions are persistent. You can close your terminal, reboot, come back tomorrow, and pick up exactly where you left off.">
+    <span class="section-label">02 / first steps</span>
+    <div class="slide-content">
+        <h2 class="reveal">Sessions</h2>
+        <ul class="reveal">
+            <li>Claude <strong>auto-saves</strong> every conversation</li>
+            <li><span class="inline-code">/rename workshop-project</span> — name this session</li>
+            <li><span class="inline-code">/resume</span> — browse and resume previous sessions</li>
+            <li><span class="inline-code">claude --continue</span> — continue most recent session from CLI</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Slide 14: Hands-On — Build Your Project -->
+<section class="slide hands-on-slide" data-section="first-steps"
+    data-notes="Step 1: Plan Mode — describe your project. Step 2: Accept Edits — build it. Step 3: Run it. Step 4: Make a small change. Step 5: Name the session. Walk the room and help. Common issues: Claude writing too much, app doesn't start, wrong framework.">
+    <span class="section-label">02 / first steps</span>
+    <div class="slide-content">
+        <div class="hands-on-badge reveal">// hands-on — 15 min</div>
+        <h2 class="reveal">Build Your Project</h2>
+        <ol class="reveal">
+            <li><strong>Plan Mode</strong> (Shift+Tab&times;2) &rarr; Describe your project, get a plan</li>
+            <li><strong>Accept Edits</strong> (Shift+Tab) &rarr; Tell Claude to build it</li>
+            <li><strong>Run it</strong> &rarr; Ask Claude to start the app</li>
+            <li><strong>First change</strong> &rarr; Change the title and color scheme</li>
+            <li><span class="inline-code">/rename workshop-project</span> &rarr; Save your session</li>
+        </ol>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SECTION 3: EFFECTIVE PROMPTING
+     ============================================= -->
+
+<!-- Slide 15: Section Title -->
+<section class="slide section-slide grid-bg" data-section="prompting"
+    data-notes="Now that you have a running project, let's talk about how to work with Claude Code effectively. The difference between a frustrating session and a productive one usually comes down to how you prompt.">
+    <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content">
+        <span class="section-number reveal">Section 03</span>
+        <h1 class="reveal">Effective Prompting</h1>
+        <p class="subtitle reveal">Getting the results you want, faster</p>
+    </div>
+</section>
+
+<!-- Slide 16: Be Specific -->
+<section class="slide" data-section="prompting"
+    data-notes="This is the single most important rule. A good prompt answers: WHAT should change, WHERE in the code, and HOW should it behave. If you include all three, Claude almost always gets it right.">
+    <span class="section-label">03 / prompting</span>
+    <div class="slide-content">
+        <h2 class="reveal">Rule 1: Be Specific</h2>
+        <div class="two-col reveal">
+            <div>
+                <p class="code-label" style="color:var(--red)">// vague</p>
+                <pre class="code-bad"><code>Make the UI better</code></pre>
+            </div>
+            <div>
+                <p class="code-label" style="color:var(--green)">// specific</p>
+                <pre class="code-good"><code>Add input validation to the recipe form:
+- Serving count must be positive
+- Show inline error in red below input
+- Disable submit until all fields valid</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 17: Break Into Steps -->
+<section class="slide" data-section="prompting"
+    data-notes="Claude handles 3-step prompts much better than 30-step ones. Each step gets full attention. It's faster to do three focused prompts than one massive prompt that needs corrections.">
+    <span class="section-label">03 / prompting</span>
+    <div class="slide-content">
+        <h2 class="reveal">Rule 2: Break It Into Steps</h2>
+        <div class="two-col reveal">
+            <div>
+                <p class="code-label" style="color:var(--red)">// too much at once</p>
+                <pre class="code-bad"><code>Build user auth, logging,
+charts, and social sharing</code></pre>
+            </div>
+            <div>
+                <p class="code-label" style="color:var(--green)">// just right</p>
+                <pre class="code-good"><code>1. Add a form to log an exercise
+   (name, sets, reps, weight)
+2. Save exercises via the API
+3. Display today's list below the form</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 18: Use Images -->
+<section class="slide" data-section="prompting"
+    data-notes="Claude Code is multimodal — it can see and analyze images. Instead of describing a UI bug in words, just paste a screenshot. This also works for design mockups and error screenshots.">
+    <span class="section-label">03 / prompting</span>
+    <div class="slide-content">
+        <h2 class="reveal">Rule 3: Use Images</h2>
+        <ul class="reveal">
+            <li><strong>Ctrl+V</strong> — Paste a screenshot</li>
+            <li><strong>Drag and drop</strong> — Drag an image file into the terminal</li>
+            <li><strong>File path</strong> — <span class="inline-code">Look at ./mockup.png and implement this</span></li>
+        </ul>
+        <p class="reveal dim">Claude can <strong>see images</strong> — use this for error screenshots, UI bugs, design mockups</p>
+    </div>
+</section>
+
+<!-- Slide 19: Shell Commands -->
+<section class="slide" data-section="prompting"
+    data-notes="The ! prefix is a shortcut for running shell commands. Output gets added to conversation context so Claude sees it too.">
+    <span class="section-label">03 / prompting</span>
+    <div class="slide-content">
+        <h2 class="reveal">Quick Shell Commands</h2>
+        <p class="reveal dim">Prefix with <span class="inline-code">!</span> to run commands directly:</p>
+        <pre class="reveal"><code><span style="color:var(--green)">!</span>npm test
+<span style="color:var(--green)">!</span>git status
+<span style="color:var(--green)">!</span>ls src/</code></pre>
+        <p class="reveal dim">Output gets added to conversation context — Claude sees it too</p>
+    </div>
+</section>
+
+<!-- Slide 20: Context Management -->
+<section class="slide" data-section="prompting"
+    data-notes="/compact is the most important command. It summarizes the conversation, keeping key context but freeing up space. Use it every 30-40 minutes.">
+    <span class="section-label">03 / prompting</span>
+    <div class="slide-content">
+        <h2 class="reveal">Context Management</h2>
+        <table class="reveal">
+            <thead>
+                <tr><th>Command</th><th>What it does</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="inline-code">/compact</span></td><td>Summarize conversation, free up space</td></tr>
+                <tr><td><span class="inline-code">/clear</span></td><td>Start completely fresh</td></tr>
+                <tr><td><span class="inline-code">/context</span></td><td>Visual grid of context usage</td></tr>
+                <tr><td><span class="inline-code">/cost</span></td><td>Show token usage and cost</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Slide 21: Let Claude Verify -->
+<section class="slide" data-section="prompting"
+    data-notes="Instead of manually testing every change, ask Claude to verify. Claude can run test suites, interact with the app, check error logs, and course-correct on its own. It's not just a code writer — it's also a tester and debugger.">
+    <span class="section-label">03 / prompting</span>
+    <div class="slide-content">
+        <h2 class="reveal">Let Claude Verify Its Own Work</h2>
+        <pre class="reveal"><code>Run the tests to make sure nothing broke.</code></pre>
+        <pre class="reveal"><code>Check that form validation works —
+try submitting with empty fields.</code></pre>
+        <pre class="reveal"><code>Take a screenshot and describe what
+the page looks like.</code></pre>
+        <p class="reveal dim">Don't check everything yourself — let Claude test and iterate</p>
+    </div>
+</section>
+
+<!-- Slide 22: Hands-On — Improve Your Project -->
+<section class="slide hands-on-slide" data-section="prompting"
+    data-notes="Have participants practice these patterns on their own project. Walk the room and look at their prompts. The most common mistake is being too vague. After a feature or two, remind them to check /cost and /context, then run /compact.">
+    <span class="section-label">03 / prompting</span>
+    <div class="slide-content">
+        <div class="hands-on-badge reveal">// hands-on — 10 min</div>
+        <h2 class="reveal">Improve Your Project</h2>
+        <ol class="reveal">
+            <li>Write a <strong>specific prompt</strong> with what, where, and how</li>
+            <li>Write a <strong>multi-step prompt</strong> with 2-3 numbered steps</li>
+            <li>Check <span class="inline-code">/cost</span> and <span class="inline-code">/context</span>, then run <span class="inline-code">/compact</span></li>
+        </ol>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SECTION 4: CLAUDE.md & MEMORY
+     ============================================= -->
+
+<!-- Slide 23: Section Title -->
+<section class="slide section-slide grid-bg" data-section="claude-md"
+    data-notes="So far, everything you've told Claude only lives in the current conversation. CLAUDE.md fixes that — it's a file Claude reads at the start of every session.">
+    <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content">
+        <span class="section-number reveal">Section 04</span>
+        <h1 class="reveal">CLAUDE.md & Memory</h1>
+        <p class="subtitle reveal">Teaching Claude about your project — permanently</p>
+    </div>
+</section>
+
+<!-- Slide 24: What is CLAUDE.md? -->
+<section class="slide" data-section="claude-md"
+    data-notes="CLAUDE.md is a markdown file in your project root. When Claude Code starts, it reads this file first. The fastest way to create one is /init.">
+    <span class="section-label">04 / claude.md</span>
+    <div class="slide-content">
+        <h2 class="reveal">What is CLAUDE.md?</h2>
+        <ul class="reveal">
+            <li>A file Claude reads <strong>at the start of every conversation</strong></li>
+            <li>Your project's instruction manual</li>
+            <li>Like <span class="inline-code">.editorconfig</span> or <span class="inline-code">.prettierrc</span> — but for Claude</li>
+        </ul>
+        <pre class="reveal"><code><span style="color:var(--green)">$</span> /init</code></pre>
+        <p class="reveal dim">Generates a CLAUDE.md by analyzing your project</p>
+    </div>
+</section>
+
+<!-- Slide 25: What to Include -->
+<section class="slide" data-section="claude-md"
+    data-notes="Include: project overview, tech stack, commands, code style. Don't include: temporary instructions, entire file contents, or generic programming advice Claude already knows.">
+    <span class="section-label">04 / claude.md</span>
+    <div class="slide-content">
+        <h2 class="reveal">What to Include</h2>
+        <pre class="reveal"><code><span style="color:var(--green)"># Project Overview</span>
+Workout tracker with React frontend and Express API.
+
+<span style="color:var(--green)"># Tech Stack</span>
+- React 18 + TypeScript, Vite, Tailwind CSS
+- Express.js backend with SQLite
+
+<span style="color:var(--green)"># Commands</span>
+- npm run dev — start dev server
+- npm test — run tests
+
+<span style="color:var(--green)"># Code Style</span>
+- Functional components with hooks
+- Named exports, no default exports</code></pre>
+    </div>
+</section>
+
+<!-- Slide 26: CLAUDE.md Hierarchy -->
+<section class="slide" data-section="claude-md"
+    data-notes="Claude reads CLAUDE.md at multiple levels. Personal preferences in home CLAUDE.md, project-specific conventions in the project's CLAUDE.md. More specific files take precedence.">
+    <span class="section-label">04 / claude.md</span>
+    <div class="slide-content">
+        <h2 class="reveal">CLAUDE.md Hierarchy</h2>
+        <table class="reveal">
+            <thead>
+                <tr><th>Location</th><th>Scope</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="inline-code">~/.claude/CLAUDE.md</span></td><td>All your projects (personal prefs)</td></tr>
+                <tr><td><span class="inline-code">./CLAUDE.md</span></td><td>This project</td></tr>
+                <tr><td><span class="inline-code">./src/CLAUDE.md</span></td><td>Subdirectory-specific</td></tr>
+            </tbody>
+        </table>
+        <p class="reveal dim">Files closer to the code take precedence</p>
+    </div>
+</section>
+
+<!-- Slide 27: Auto Memory -->
+<section class="slide" data-section="claude-md"
+    data-notes="In addition to CLAUDE.md, Claude has auto-memory. When you tell Claude something important, it may save that for future sessions. You can also explicitly ask Claude to remember something.">
+    <span class="section-label">04 / claude.md</span>
+    <div class="slide-content">
+        <h2 class="reveal">Auto Memory</h2>
+        <p class="reveal">Claude remembers things across sessions automatically</p>
+        <pre class="reveal"><code>Remember that this project uses pnpm, not npm.</code></pre>
+        <p class="reveal dim">Also picks up important context from conversations on its own</p>
+    </div>
+</section>
+
+<!-- Slide 28: Hands-On — Set Up CLAUDE.md -->
+<section class="slide hands-on-slide" data-section="claude-md"
+    data-notes="Quick exercise. Run /init, review and customize, then /clear and ask a question. If Claude answers correctly from CLAUDE.md alone, it's working.">
+    <span class="section-label">04 / claude.md</span>
+    <div class="slide-content">
+        <div class="hands-on-badge reveal">// hands-on — 5 min</div>
+        <h2 class="reveal">Set Up CLAUDE.md</h2>
+        <ol class="reveal">
+            <li>Run <span class="inline-code">/init</span> to generate your CLAUDE.md</li>
+            <li>Review and customize it — add your project's specifics</li>
+            <li>Run <span class="inline-code">/clear</span> and ask "What tech stack is this project using?"</li>
+            <li>Claude should know the answer from CLAUDE.md alone</li>
+        </ol>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SECTION 5: MCP SERVERS
+     ============================================= -->
+
+<!-- Slide 29: Section Title -->
+<section class="slide section-slide grid-bg" data-section="mcp"
+    data-notes="MCP — Model Context Protocol — lets Claude connect to external tools and data sources. Think of MCP servers as plugins. We're going to build a custom MCP server and add Playwright.">
+    <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content">
+        <span class="section-number reveal">Section 05</span>
+        <h1 class="reveal">MCP Servers</h1>
+        <p class="subtitle reveal">Give Claude new superpowers</p>
+    </div>
+</section>
+
+<!-- Slide 30: What is MCP? -->
+<section class="slide" data-section="mcp"
+    data-notes="MCP is an open standard for connecting AI assistants to external tools and data. An MCP server exposes tools — functions with names, descriptions, and parameters — that Claude can call. You always approve or deny.">
+    <span class="section-label">05 / mcp</span>
+    <div class="slide-content">
+        <h2 class="reveal">What is MCP?</h2>
+        <pre class="reveal"><code>You  &lt;-&gt;  Claude Code  &lt;-&gt;  MCP Server  &lt;-&gt;  Your API / Service</code></pre>
+        <ul class="reveal">
+            <li>MCP servers expose <strong>tools</strong> Claude can call</li>
+            <li>Claude reads tool descriptions and decides when to use them</li>
+            <li>You approve/deny each tool call</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Slide 32: Express → MCP — The Pattern -->
+<section class="slide" data-section="mcp"
+    data-notes="This is the core pattern. Your Express API has routes. Your MCP server wraps each route as a tool with a name, description, and input schema. The description is critical — it's what Claude reads to decide WHEN to use the tool. The input schema tells Claude what parameters to pass. When you talk to Claude, it picks the right tool automatically. You don't need to write this by hand — Claude will generate it for you in the hands-on section. But understanding the pattern helps you review what Claude builds.">
+    <span class="section-label">05 / mcp</span>
+    <div class="slide-content">
+        <h2 class="reveal">Express Route → MCP Tool</h2>
+        <div class="two-col reveal">
+            <div>
+                <p class="code-label">Your Express API</p>
+                <pre><code><span style="color:var(--cyan)">app.get</span>(<span style="color:var(--amber)">"/api/workouts"</span>, ...)
+<span style="color:var(--cyan)">app.post</span>(<span style="color:var(--amber)">"/api/workouts"</span>, ...)
+<span style="color:var(--cyan)">app.get</span>(<span style="color:var(--amber)">"/api/workouts/stats"</span>, ...)</code></pre>
+            </div>
+            <div>
+                <p class="code-label" style="color:var(--green)">MCP Server wraps each route</p>
+                <pre class="code-good"><code><span style="color:var(--cyan)">server.tool</span>(<span style="color:var(--amber)">"list_workouts"</span>,
+  <span style="color:var(--text-secondary)">"List all logged workouts..."</span>,
+  <span style="color:var(--text-muted)">async</span> () => {
+    <span style="color:var(--text-muted)">const</span> res = <span style="color:var(--text-muted)">await</span> <span style="color:var(--cyan)">fetch</span>(<span style="color:var(--amber)">`${API}/workouts`</span>);
+    <span style="color:var(--text-muted)">return</span> { content: [...] };
+  }
+);</code></pre>
+            </div>
+        </div>
+        <p class="reveal dim" style="font-size:var(--small-size)"><strong>name</strong> = what it does &middot; <strong>description</strong> = when Claude should use it &middot; <strong>handler</strong> = calls your API</p>
+    </div>
+</section>
+
+<!-- Slide 33: Why Build Your Own? -->
+<section class="slide" data-section="mcp"
+    data-notes="Pre-built MCP servers exist for GitHub, databases, web fetching. But the real power is connecting Claude to YOUR app's API. Claude becomes an intelligent assistant for your data.">
+    <span class="section-label">05 / mcp</span>
+    <div class="slide-content">
+        <h2 class="reveal">Why Build Your Own MCP Server?</h2>
+        <div class="two-col reveal">
+            <div>
+                <h3>Without MCP</h3>
+                <p class="dim">Claude can read/write files and run commands</p>
+            </div>
+            <div>
+                <h3 style="color:var(--green)">With your custom MCP server</h3>
+                <pre style="border-color:var(--green-dim)"><code>"What was my heaviest deadlift?"
+"Log a workout: 3x10 bench at 80kg"
+"Compare my reading stats to last year"</code></pre>
+            </div>
+        </div>
+        <p class="reveal dim">Claude becomes an <strong>intelligent assistant for your data</strong></p>
+    </div>
+</section>
+
+<!-- Slide 32: Good Tool Descriptions -->
+<section class="slide" data-section="mcp"
+    data-notes="The tool description is what Claude reads to decide whether to use a tool. Be specific about what the tool does, parameters, return values, and when it should be used. If Claude isn't using your tools correctly, the fix is almost always better descriptions.">
+    <span class="section-label">05 / mcp</span>
+    <div class="slide-content">
+        <h2 class="reveal">Good Tool Descriptions Matter</h2>
+        <div class="two-col reveal">
+            <div>
+                <p class="code-label" style="color:var(--red)">// bad</p>
+                <pre class="code-bad"><code>name: "getData"
+description: "Gets data"</code></pre>
+            </div>
+            <div>
+                <p class="code-label" style="color:var(--green)">// good</p>
+                <pre class="code-good"><code>name: "search_workouts"
+description: "Search workouts by
+date range, exercise name, or
+muscle group. Returns exercises
+with sets, reps, weight. Use when
+user asks about training history."</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 33: Playwright -->
+<section class="slide" data-section="mcp"
+    data-notes="Playwright gives Claude browser control — open pages, click, fill forms, take screenshots. The combo of your custom MCP server plus Playwright is powerful. Claude can add data through your API and then visually verify it in the browser.">
+    <span class="section-label">05 / mcp</span>
+    <div class="slide-content">
+        <h2 class="reveal">Playwright: Browser Automation</h2>
+        <pre class="reveal"><code><span style="color:var(--green)">$</span> claude mcp add playwright -- npx -y @anthropic-ai/mcp-playwright@latest</code></pre>
+        <p class="reveal dim">Then ask Claude:</p>
+        <pre class="reveal"><code>Open my app at localhost:3000 and take a screenshot.
+Does the layout look correct?</code></pre>
+        <p class="reveal dim">Claude can open browsers, navigate, click, fill forms, and screenshot</p>
+    </div>
+</section>
+
+<!-- Slide 34: Hands-On — MCP Servers -->
+<section class="slide hands-on-slide" data-section="mcp"
+    data-notes="Two parts: build a custom MCP server for your API, then add Playwright. Walk the room — MCP server issues can be tricky. Common problems: server doesn't start, Claude doesn't see tools, wrong API URLs.">
+    <span class="section-label">05 / mcp</span>
+    <div class="slide-content">
+        <div class="hands-on-badge reveal">// hands-on — 10 min</div>
+        <h2 class="reveal">Build & Add MCP Servers</h2>
+        <ol class="reveal">
+            <li>Ask Claude to build an MCP server for your API</li>
+            <li>Register it: <span class="inline-code">claude mcp add my-project -- npx tsx mcp-server/index.ts</span></li>
+            <li>Add Playwright: <span class="inline-code">claude mcp add playwright -- npx -y @anthropic-ai/mcp-playwright@latest</span></li>
+            <li>Ask Claude a question about your data</li>
+            <li>Ask Claude to open your app in a browser and check it</li>
+        </ol>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SECTION 6: SKILLS, HOOKS & AUTOMATION
+     ============================================= -->
+
+<!-- Slide 35: Section Title -->
+<section class="slide section-slide grid-bg" data-section="skills"
+    data-notes="Skills and hooks are about customization and automation. Skills are reusable prompts you invoke with slash commands. Hooks are shell scripts that run automatically. Plugins bundle these into shareable packages. Agent teams coordinate multiple Claude instances.">
+    <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content">
+        <span class="section-number reveal">Section 06</span>
+        <h1 class="reveal">Skills, Plugins & Agent Teams</h1>
+        <p class="subtitle reveal">Customize, package, and scale</p>
+    </div>
+</section>
+
+<!-- Slide 36: Skills -->
+<section class="slide" data-section="skills"
+    data-notes="Skills are markdown files in .claude/skills/ that act as reusable prompt templates. Two types: user_invocable (you trigger) and model_invocable (Claude auto-uses). Skills can live in project or globally.">
+    <span class="section-label">06 / skills</span>
+    <div class="slide-content">
+        <h2 class="reveal">Skills: Custom Slash Commands</h2>
+        <p class="reveal dim">Create <span class="inline-code">.claude/skills/review.md</span>:</p>
+        <pre class="reveal"><code><span style="color:var(--text-muted)">---</span>
+<span style="color:var(--cyan)">description:</span> Review code for bugs and issues
+<span style="color:var(--cyan)">user_invocable:</span> true
+<span style="color:var(--text-muted)">---</span>
+
+Review recent changes. For each issue:
+1. File and line number
+2. Description
+3. Suggested fix</code></pre>
+        <p class="reveal dim">Then just type: <span class="inline-code">/review</span></p>
+    </div>
+</section>
+
+<!-- Slide 37: Hooks -->
+<section class="slide" data-section="skills"
+    data-notes="Hooks are deterministic shell scripts that run at lifecycle events. Key events: PreToolUse (can block actions), PostToolUse (auto-format), Notification (task done alerts). Configure in .claude/settings.json. The notification hook with afplay is a fan favorite — lets you switch to another window and hear a bell when Claude is done.">
+    <span class="section-label">06 / skills</span>
+    <div class="slide-content">
+        <h2 class="reveal">Hooks: Automation Without AI</h2>
+        <p class="reveal dim">Shell commands that run at lifecycle points — <strong>no AI involved</strong></p>
+        <div class="two-col reveal">
+            <div>
+                <p class="code-label" style="color:var(--green)">// auto-format on edit</p>
+                <pre class="code-good"><code>"PostToolUse": [{
+  "matcher": "Write|Edit",
+  "command": "npx prettier --write
+    $CLAUDE_FILE_PATH"
+}]</code></pre>
+            </div>
+            <div>
+                <p class="code-label" style="color:var(--amber)">// play a sound when done (macOS)</p>
+                <pre><code>"Notification": [{
+  "matcher": "",
+  "command": "afplay /System/Library/
+    Sounds/Glass.aiff"
+}]</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 38: Skills vs Hooks -->
+<section class="slide" data-section="skills"
+    data-notes="Skills: AI-processed prompt templates, triggered by you. Hooks: deterministic shell scripts, triggered automatically. Use skills for intelligent workflows, hooks for consistent automation.">
+    <span class="section-label">06 / skills</span>
+    <div class="slide-content">
+        <h2 class="reveal">Skills vs Hooks</h2>
+        <table class="reveal">
+            <thead>
+                <tr><th></th><th>Skills</th><th>Hooks</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>What</strong></td><td>Prompt templates</td><td>Shell scripts</td></tr>
+                <tr><td><strong>How</strong></td><td>AI processes the prompt</td><td>Deterministic execution</td></tr>
+                <tr><td><strong>When</strong></td><td>You type <span class="inline-code">/command</span></td><td>Automatic on events</td></tr>
+                <tr><td><strong>For</strong></td><td>Reusable workflows</td><td>Auto-format, block, notify</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Slide 41: Plugins -->
+<section class="slide" data-section="skills"
+    data-notes="Plugins bundle skills, hooks, agents, and MCP servers into a shareable package. Plugin skills are namespaced — /my-plugin:review instead of /review — so multiple plugins can coexist. Start with standalone .claude/ config for iteration, then convert to a plugin when ready to share. Use --plugin-dir to test locally.">
+    <span class="section-label">06 / skills</span>
+    <div class="slide-content">
+        <h2 class="reveal">Plugins: Package & Share</h2>
+        <p class="reveal dim">Bundle skills, hooks, agents, and MCP into one installable unit</p>
+        <div class="two-col reveal">
+            <div>
+                <h3>Standalone</h3>
+                <pre><code>.claude/skills/review.md
+&rarr; <span style="color:var(--green)">/review</span></code></pre>
+                <p class="dim" style="font-size:var(--small-size)">Personal, single-project</p>
+            </div>
+            <div>
+                <h3 style="color:var(--green)">Plugin</h3>
+                <pre style="border-color:var(--green-dim)"><code>my-plugin/.claude-plugin/plugin.json
+my-plugin/skills/review/SKILL.md
+&rarr; <span style="color:var(--green)">/my-plugin:review</span></code></pre>
+                <p class="dim" style="font-size:var(--small-size)">Shareable, namespaced, versioned</p>
+            </div>
+        </div>
+        <p class="reveal dim" style="font-size:var(--small-size)">Test locally: <span class="inline-code">claude --plugin-dir ./my-plugin</span></p>
+    </div>
+</section>
+
+<!-- Slide 42: Agent Teams -->
+<section class="slide" data-section="skills"
+    data-notes="Agent teams are experimental — disabled by default. They spawn multiple Claude Code instances that work in parallel with a shared task list. The lead coordinates, teammates work independently and message each other. Best for parallel code review, competing hypotheses, and cross-layer work. Each teammate is a separate Claude instance, so token costs are higher.">
+    <span class="section-label">06 / skills</span>
+    <div class="slide-content">
+        <h2 class="reveal">Agent Teams <span class="dim" style="font-size:var(--small-size)">(experimental)</span></h2>
+        <p class="reveal dim">Coordinate multiple Claude instances working in parallel</p>
+        <pre class="reveal"><code>Create an agent team with 3 reviewers:
+- Security implications
+- Performance impact
+- Test coverage</code></pre>
+        <table class="reveal" style="font-size:var(--small-size)">
+            <thead>
+                <tr><th></th><th>Subagents</th><th>Agent Teams</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Communication</strong></td><td>Report back to main only</td><td>Message each other directly</td></tr>
+                <tr><td><strong>Best for</strong></td><td>Focused, isolated tasks</td><td>Parallel work needing collaboration</td></tr>
+                <tr><td><strong>Token cost</strong></td><td>Lower</td><td>Higher (separate instances)</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Slide 43: Hands-On — Skills or Hook -->
+<section class="slide hands-on-slide" data-section="skills"
+    data-notes="Let participants choose skill or hook. For skills: create .claude/skills/test.md and invoke with /test. For hooks: configure in .claude/settings.json. If someone finishes early, have them do the other option.">
+    <span class="section-label">06 / skills</span>
+    <div class="slide-content">
+        <div class="hands-on-badge reveal">// hands-on — 5 min</div>
+        <h2 class="reveal">Create a Skill or Hook</h2>
+        <div class="two-col reveal">
+            <div>
+                <h3>Option A — Skill</h3>
+                <pre><code>Create a skill called "test" in
+.claude/skills/test.md that runs
+tests, diagnoses failures, and
+suggests fixes.</code></pre>
+                <p class="dim" style="font-size:var(--small-size)">Then try: <span class="inline-code">/test</span></p>
+            </div>
+            <div>
+                <h3>Option B — Hook</h3>
+                <pre><code>Add a PostToolUse hook that runs
+Prettier on any file I edit.</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =============================================
+     SECTION 7: WRAP-UP
+     ============================================= -->
+
+<!-- Slide 40: Section Title -->
+<section class="slide section-slide grid-bg" data-section="wrapup"
+    data-notes="We're in the home stretch. You've built a project, set up CLAUDE.md, created MCP servers, and made custom skills or hooks. Let's commit everything and talk about what's next.">
+    <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content">
+        <span class="section-number reveal">Section 07</span>
+        <h1 class="reveal">Wrap-Up</h1>
+        <p class="subtitle reveal">Let's save what you built</p>
+    </div>
+</section>
+
+<!-- Slide 41: Commit & Push -->
+<section class="slide" data-section="wrapup"
+    data-notes="Ask Claude to review changes and create a commit. Claude stages relevant files, writes a descriptive commit message, and creates the commit. They can also push and create a PR if they have GitHub set up.">
+    <span class="section-label">07 / wrap-up</span>
+    <div class="slide-content">
+        <h2 class="reveal">Capstone: Commit & Push</h2>
+        <pre class="reveal"><code>Review all changes, then create a git commit
+with a descriptive message.</code></pre>
+        <p class="reveal dim">Optionally:</p>
+        <pre class="reveal"><code>Push to a new branch and create a pull request.</code></pre>
+        <p class="reveal dim">Claude handles git staging, commit messages, branching, and PRs</p>
+    </div>
+</section>
+
+<!-- Slide 42: What You Built Today -->
+<section class="slide" data-section="wrapup"
+    data-notes="Take a moment to appreciate how much you accomplished in 90 minutes. You went from an empty directory to a full-stack app with an MCP server, custom automation, and everything committed to git. Plus terminal config, checkpointing, plugins, and agent teams.">
+    <span class="section-label">07 / wrap-up</span>
+    <div class="slide-content">
+        <h2 class="reveal">What You Built Today</h2>
+        <ol class="reveal" style="font-size: var(--small-size);">
+            <li>Brainstormed a project with data model and API thinking</li>
+            <li>Configured your terminal and built a full-stack app</li>
+            <li>Mastered permission modes, checkpointing, and safety controls</li>
+            <li>Learned effective prompting — specific, step-by-step, images</li>
+            <li>Set up CLAUDE.md for persistent project knowledge</li>
+            <li>Built a custom MCP server and added Playwright</li>
+            <li>Created skills, hooks, and learned about plugins and agent teams</li>
+            <li>Committed your work with Claude's git integration</li>
+        </ol>
+    </div>
+</section>
+
+<!-- Slide 43: Top Tips -->
+<section class="slide" data-section="wrapup"
+    data-notes="These are the habits that separate productive Claude Code users from frustrated ones. The most important: Plan Mode first, be specific, and press Esc immediately when things go wrong.">
+    <span class="section-label">07 / wrap-up</span>
+    <div class="slide-content">
+        <h2 class="reveal">Top Tips</h2>
+        <div class="card-grid reveal">
+            <div class="card">
+                <h3>Plan Mode first</h3>
+                <p>Think before you code</p>
+            </div>
+            <div class="card">
+                <h3>Be specific</h3>
+                <p>What, where, how</p>
+            </div>
+            <div class="card">
+                <h3>Small steps</h3>
+                <p>3-step prompts beat 30-step</p>
+            </div>
+            <div class="card">
+                <h3>Esc to stop</h3>
+                <p>Don't wait if it's going wrong</p>
+            </div>
+            <div class="card">
+                <h3>Paste screenshots</h3>
+                <p>Claude can see images</p>
+            </div>
+            <div class="card">
+                <h3>/compact regularly</h3>
+                <p>Keep context clean</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 44: Explore Next -->
+<section class="slide" data-section="wrapup"
+    data-notes="These are power-user features worth exploring after the workshop: subagents, headless mode, GitHub Actions, Claude Code on the web, Slack integration, plugin marketplaces, and more.">
+    <span class="section-label">07 / wrap-up</span>
+    <div class="slide-content">
+        <h2 class="reveal">Explore Next</h2>
+        <table class="reveal">
+            <thead>
+                <tr><th>Feature</th><th>What it does</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Subagents</strong></td><td>Delegate tasks to specialized AI workers</td></tr>
+                <tr><td><strong>Headless mode</strong></td><td><span class="inline-code">claude -p "prompt"</span> for scripts and CI</td></tr>
+                <tr><td><strong>GitHub Actions</strong></td><td><span class="inline-code">@claude</span> in PR comments</td></tr>
+                <tr><td><strong>Claude Code on the web</strong></td><td>Run sessions in the browser at claude.ai/code</td></tr>
+                <tr><td><strong>Slack integration</strong></td><td>Route bug reports to PRs via <span class="inline-code">@Claude</span></td></tr>
+                <tr><td><strong>Plugin marketplaces</strong></td><td>Discover and install community plugins</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Slide 45: Resources & Thank You -->
+<section class="slide title-slide grid-bg" data-section="wrapup"
+    data-notes="Share these links and the cheatsheet as takeaways. Remind participants to keep building their workshop project this week while the concepts are fresh.">
+    <div class="glow-orb" style="top: 40%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content">
+        <h1 class="reveal" style="font-size: var(--h2-size);">Resources</h1>
+        <ul class="reveal" style="text-align: left; max-width: 600px;">
+            <li><strong>Docs:</strong> code.claude.com/docs</li>
+            <li><strong>MCP:</strong> modelcontextprotocol.io</li>
+            <li><strong>MCP Servers:</strong> github.com/modelcontextprotocol/servers</li>
+            <li><strong>Issues:</strong> github.com/anthropics/claude-code</li>
+            <li><strong>Cheatsheet:</strong> Keep it open while working!</li>
+        </ul>
+        <div class="reveal" style="margin-top: var(--content-gap);">
+            <h2>Thank you! Happy building.<span class="cursor"></span></h2>
+        </div>
+    </div>
+</section>
+
+
+<!-- ===========================================
+     JAVASCRIPT: Presentation Controller
+     =========================================== -->
+<script>
+    /* ===========================================
+       SLIDE PRESENTATION CONTROLLER
+       Handles navigation, animations, progress,
+       speaker notes, and keyboard shortcuts.
+       =========================================== */
+    class SlidePresentation {
+        constructor() {
+            this.slides = Array.from(document.querySelectorAll('.slide'));
+            this.currentSlide = 0;
+            this.totalSlides = this.slides.length;
+            this.isAnimating = false;
+            this.notesVisible = false;
+
+            // Section metadata for nav dots
+            this.sections = [
+                { name: 'welcome', label: '01 Brainstorm', start: 0 },
+                { name: 'first-steps', label: '02 First Steps', start: 7 },
+                { name: 'prompting', label: '03 Prompting', start: 16 },
+                { name: 'claude-md', label: '04 CLAUDE.md', start: 24 },
+                { name: 'mcp', label: '05 MCP', start: 30 },
+                { name: 'skills', label: '06 Skills & Plugins', start: 37 },
+                { name: 'wrapup', label: '07 Wrap-up', start: 44 },
+            ];
+
+            this.sectionStarts = new Set(this.sections.map(s => s.start));
+
+            this.init();
+        }
+
+        init() {
+            this.buildNavDots();
+            this.bindKeyboard();
+            this.bindScroll();
+            this.bindTouch();
+            this.updateSlide(0);
+
+            // Hide keyboard hint after first navigation
+            this.hasNavigated = false;
+
+            // Check URL hash for direct slide access
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#slide-')) {
+                const num = parseInt(hash.replace('#slide-', '')) - 1;
+                if (num >= 0 && num < this.totalSlides) {
+                    this.goToSlide(num, false);
+                }
+            }
+        }
+
+        /* -------------------------------------------
+           NAV DOTS
+           ------------------------------------------- */
+        buildNavDots() {
+            const nav = document.getElementById('navDots');
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot' + (this.sectionStarts.has(i) ? ' section-start' : '');
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', () => this.goToSlide(i));
+                nav.appendChild(dot);
+            });
+            this.navDotEls = nav.querySelectorAll('.nav-dot');
+        }
+
+        /* -------------------------------------------
+           KEYBOARD NAVIGATION
+           ------------------------------------------- */
+        bindKeyboard() {
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case 'ArrowDown':
+                    case ' ':
+                        e.preventDefault();
+                        this.next();
+                        break;
+                    case 'ArrowLeft':
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        this.prev();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        this.goToSlide(0);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        this.goToSlide(this.totalSlides - 1);
+                        break;
+                    case 'n':
+                    case 'N':
+                        this.toggleNotes();
+                        break;
+                }
+            });
+        }
+
+        /* -------------------------------------------
+           SCROLL / WHEEL NAVIGATION
+           ------------------------------------------- */
+        bindScroll() {
+            let lastScroll = 0;
+            const throttle = 800; // ms between scroll navigations
+
+            // Use Intersection Observer for scroll-snap based navigation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                        const index = this.slides.indexOf(entry.target);
+                        if (index !== -1 && index !== this.currentSlide) {
+                            this.currentSlide = index;
+                            this.updateUI();
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            this.slides.forEach(slide => observer.observe(slide));
+
+            // Also handle wheel for smoother control
+            document.addEventListener('wheel', (e) => {
+                const now = Date.now();
+                if (now - lastScroll < throttle) return;
+                lastScroll = now;
+
+                if (e.deltaY > 0) {
+                    this.next();
+                } else if (e.deltaY < 0) {
+                    this.prev();
+                }
+            }, { passive: true });
+        }
+
+        /* -------------------------------------------
+           TOUCH / SWIPE NAVIGATION
+           ------------------------------------------- */
+        bindTouch() {
+            let startY = 0;
+            let startX = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+                startX = e.touches[0].clientX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', (e) => {
+                const endY = e.changedTouches[0].clientY;
+                const endX = e.changedTouches[0].clientX;
+                const diffY = startY - endY;
+                const diffX = startX - endX;
+
+                // Only handle vertical swipes (ignore horizontal)
+                if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 50) {
+                    if (diffY > 0) {
+                        this.next();
+                    } else {
+                        this.prev();
+                    }
+                }
+            }, { passive: true });
+        }
+
+        /* -------------------------------------------
+           NAVIGATION
+           ------------------------------------------- */
+        next() {
+            if (this.currentSlide < this.totalSlides - 1) {
+                this.goToSlide(this.currentSlide + 1);
+            }
+        }
+
+        prev() {
+            if (this.currentSlide > 0) {
+                this.goToSlide(this.currentSlide - 1);
+            }
+        }
+
+        goToSlide(index, animate = true) {
+            if (index < 0 || index >= this.totalSlides) return;
+            this.currentSlide = index;
+
+            const slide = this.slides[index];
+            slide.scrollIntoView({
+                behavior: animate ? 'smooth' : 'instant',
+                block: 'start'
+            });
+
+            this.updateUI();
+
+            // Hide keyboard hint after first navigation
+            if (!this.hasNavigated) {
+                this.hasNavigated = true;
+                setTimeout(() => {
+                    document.getElementById('keyboardHint').classList.add('hidden');
+                }, 2000);
+            }
+        }
+
+        /* -------------------------------------------
+           UI UPDATES
+           ------------------------------------------- */
+        updateUI() {
+            this.updateProgressBar();
+            this.updateNavDots();
+            this.updateCounter();
+            this.updateAnimations();
+            this.updateNotes();
+            this.updateHash();
+        }
+
+        updateSlide(index) {
+            this.currentSlide = index;
+            this.slides[index].classList.add('visible');
+            this.updateUI();
+        }
+
+        updateProgressBar() {
+            const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        updateNavDots() {
+            this.navDotEls.forEach((dot, i) => {
+                dot.classList.toggle('active', i === this.currentSlide);
+            });
+        }
+
+        updateCounter() {
+            document.getElementById('slideCounter').textContent =
+                `${this.currentSlide + 1} / ${this.totalSlides}`;
+        }
+
+        updateAnimations() {
+            // Mark current and adjacent slides as visible for animations
+            this.slides.forEach((slide, i) => {
+                if (i === this.currentSlide) {
+                    slide.classList.add('visible');
+                } else if (Math.abs(i - this.currentSlide) > 1) {
+                    // Reset distant slides so animations replay
+                    slide.classList.remove('visible');
+                }
+            });
+        }
+
+        updateNotes() {
+            if (this.notesVisible) {
+                const notes = this.slides[this.currentSlide].dataset.notes || 'No speaker notes for this slide.';
+                document.getElementById('notesContent').textContent = notes;
+            }
+        }
+
+        updateHash() {
+            history.replaceState(null, null, `#slide-${this.currentSlide + 1}`);
+        }
+
+        /* -------------------------------------------
+           SPEAKER NOTES
+           ------------------------------------------- */
+        toggleNotes() {
+            this.notesVisible = !this.notesVisible;
+            const overlay = document.getElementById('notesOverlay');
+            overlay.classList.toggle('visible', this.notesVisible);
+            if (this.notesVisible) {
+                this.updateNotes();
+            }
+        }
+    }
+
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        new SlidePresentation();
+    });
+</script>
+
+</body>
+</html>
