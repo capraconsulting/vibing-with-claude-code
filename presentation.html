@@ -690,7 +690,7 @@
            REDUCED MOTION
            =========================================== */
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
+            *:not(.cursor), *::before, *::after {
                 animation-duration: 0.01ms !important;
                 transition-duration: 0.2s !important;
             }
