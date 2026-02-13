@@ -66,7 +66,7 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
+            scroll-snap-type: y proximity;
             height: 100%;
             overflow-x: hidden;
         }
@@ -86,9 +86,9 @@
            =========================================== */
         .slide {
             width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow: visible;
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
@@ -101,8 +101,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            max-height: 100%;
-            overflow: hidden;
+            overflow: visible;
             gap: var(--content-gap);
         }
 
@@ -716,7 +715,7 @@
 <nav class="nav-dots" id="navDots"></nav>
 
 <!-- Slide counter -->
-<div class="slide-counter" id="slideCounter">1 / 50</div>
+<div class="slide-counter" id="slideCounter">1 / 51</div>
 
 <!-- Keyboard hint -->
 <div class="keyboard-hint" id="keyboardHint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> to navigate &middot; <kbd>N</kbd> speaker notes</div>
@@ -838,6 +837,7 @@
             <li>Think about what Claude could do with your data</li>
             <li>Make sure your project directory is ready: <span class="inline-code">cd ~/my-workshop-project</span></li>
         </ol>
+        <p class="reveal" style="font-size:var(--h2-size); text-align:center; margin-top: var(--content-gap);"><a href="https://github.com/capraconsulting/vibing-with-claude-code" style="color:var(--green); text-decoration:none;">github.com/capraconsulting/vibing-with-claude-code</a></p>
     </div>
 </section>
 
@@ -1128,9 +1128,27 @@ the page looks like.</code></pre>
     </div>
 </section>
 
-<!-- Slide 22: Hands-On — Improve Your Project -->
+<!-- Slide 22: Git Worktrees — Parallel Work -->
+<section class="slide" data-section="prompting"
+    data-notes="Git worktrees let you check out the same repo in multiple directories, each on a different branch. Run a separate Claude Code session in each worktree to work on multiple features at the same time — no conflicts. This is a huge productivity multiplier. Each session is independent with its own context. When done, merge both branches normally.">
+    <span class="section-label">03 / prompting</span>
+    <div class="slide-content">
+        <h2 class="reveal">Parallel Work with Git Worktrees</h2>
+        <p class="reveal dim">Run multiple Claude sessions on different branches — no conflicts</p>
+        <pre class="reveal"><code><span style="color:var(--text-muted)"># Create a worktree on a new branch</span>
+<span style="color:var(--green)">$</span> git worktree add ../my-project-search feature/search
+
+<span style="color:var(--text-muted)"># Terminal 1: main branch</span>
+<span style="color:var(--green)">$</span> cd ~/my-project && claude
+<span style="color:var(--text-muted)"># Terminal 2: feature branch</span>
+<span style="color:var(--green)">$</span> cd ~/my-project-search && claude</code></pre>
+        <p class="reveal dim" style="font-size:var(--small-size)">Two independent Claude sessions, same repo, different branches. Merge when done.</p>
+    </div>
+</section>
+
+<!-- Slide 23: Hands-On — Improve Your Project -->
 <section class="slide hands-on-slide" data-section="prompting"
-    data-notes="Have participants practice these patterns on their own project. Walk the room and look at their prompts. The most common mistake is being too vague. After a feature or two, remind them to check /cost and /context, then run /compact.">
+    data-notes="Have participants practice these patterns on their own project. Walk the room and look at their prompts. The most common mistake is being too vague. Encourage them to try a worktree if they have time. After a feature or two, remind them to check /cost and /context, then run /compact.">
     <span class="section-label">03 / prompting</span>
     <div class="slide-content">
         <div class="hands-on-badge reveal">// hands-on — 10 min</div>
@@ -1138,6 +1156,7 @@ the page looks like.</code></pre>
         <ol class="reveal">
             <li>Write a <strong>specific prompt</strong> with what, where, and how</li>
             <li>Write a <strong>multi-step prompt</strong> with 2-3 numbered steps</li>
+            <li>Try a <strong>git worktree</strong> — run two Claude sessions in parallel</li>
             <li>Check <span class="inline-code">/cost</span> and <span class="inline-code">/context</span>, then run <span class="inline-code">/compact</span></li>
         </ol>
     </div>
@@ -1690,10 +1709,10 @@ with a descriptive message.</code></pre>
                 { name: 'welcome', label: '01 Brainstorm', start: 0 },
                 { name: 'first-steps', label: '02 First Steps', start: 7 },
                 { name: 'prompting', label: '03 Prompting', start: 16 },
-                { name: 'claude-md', label: '04 CLAUDE.md', start: 24 },
-                { name: 'mcp', label: '05 MCP', start: 30 },
-                { name: 'skills', label: '06 Skills & Plugins', start: 37 },
-                { name: 'wrapup', label: '07 Wrap-up', start: 44 },
+                { name: 'claude-md', label: '04 CLAUDE.md', start: 25 },
+                { name: 'mcp', label: '05 MCP', start: 31 },
+                { name: 'skills', label: '06 Skills & Plugins', start: 38 },
+                { name: 'wrapup', label: '07 Wrap-up', start: 45 },
             ];
 
             this.sectionStarts = new Set(this.sections.map(s => s.start));

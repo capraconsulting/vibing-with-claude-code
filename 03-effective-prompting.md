@@ -104,7 +104,57 @@ Claude Code remembers your entire conversation. But long conversations can get n
 
 **Check `/cost` periodically** to understand how much context you're consuming. This helps you develop intuition for when to compact or clear.
 
-### 7. Let Claude Verify Its Own Work
+### 7. Parallel Work with Git Worktrees
+
+When you're working with Claude Code, each session runs in one directory. If you want to work on multiple features at the same time — say, one Claude session builds a search feature while another fixes bugs — they'll conflict if they're editing the same files in the same directory.
+
+**Git worktrees** solve this. A worktree is a separate checkout of the same repo in a different directory, on its own branch. Each worktree shares the same `.git` history but has its own working files.
+
+#### How It Works
+
+```bash
+# From your main project directory, create a worktree for a new feature
+git worktree add ../my-project-search feature/search
+
+# Now you have two directories:
+# ~/my-project/              ← main branch (your current work)
+# ~/my-project-search/       ← feature/search branch (new worktree)
+```
+
+Open a separate terminal in each directory, run `claude` in both, and you have two independent Claude Code sessions working in parallel on different branches — no conflicts.
+
+#### Useful Commands
+
+| Command | What it does |
+|---------|-------------|
+| `git worktree add ../dir branch-name` | Create a new worktree on a branch |
+| `git worktree list` | Show all active worktrees |
+| `git worktree remove ../dir` | Remove a worktree when done |
+
+#### When to Use Worktrees
+
+- **Parallel features** — Two Claude sessions building different features simultaneously
+- **Bug fix while building** — Keep your feature branch untouched, fix the bug in a separate worktree
+- **Code review** — Check out a PR branch in a worktree without switching your main branch
+- **Experimentation** — Try a risky approach in a worktree, delete it if it doesn't work out
+
+#### Workflow Example
+
+```bash
+# Terminal 1: Continue your main feature
+cd ~/my-project
+claude
+> "Keep working on the dashboard layout"
+
+# Terminal 2: Fix a bug in parallel
+cd ~/my-project-bugfix
+claude
+> "Fix the login validation bug on this branch"
+```
+
+When both are done, merge both branches through normal git workflows (PRs, merge, rebase).
+
+### 8. Let Claude Verify Its Own Work
 
 Instead of checking everything yourself, ask Claude to verify:
 
@@ -146,7 +196,29 @@ Please make these changes:
 3. Add a confirmation dialog before deleting
 ```
 
-### Exercise 3: Check Your Context
+### Exercise 3: Parallel Work with Git Worktrees
+
+Create a worktree and run a second Claude Code session in parallel:
+
+```bash
+# Create a worktree for a new feature branch
+git worktree add ../my-project-feature feature/new-feature
+```
+
+Open a new terminal in the worktree directory and start Claude Code:
+
+```bash
+cd ../my-project-feature
+claude
+```
+
+Ask each Claude session to work on something different — for example, one adds a new feature while the other writes tests. When done, clean up:
+
+```bash
+git worktree remove ../my-project-feature
+```
+
+### Exercise 4: Check Your Context
 
 Run these commands and observe what they show:
 
@@ -178,6 +250,7 @@ Before we move on, you should have:
 
 - [ ] Written at least one specific, detailed prompt
 - [ ] Tried a multi-step prompt
+- [ ] Created a git worktree and run Claude Code in parallel (or understood how it works)
 - [ ] Checked your context usage with `/cost` or `/context`
 - [ ] Used `/compact` at least once
 
