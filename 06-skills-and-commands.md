@@ -302,7 +302,7 @@ For full details, see the [agent teams docs](https://code.claude.com/docs/en/age
 
 ---
 
-## Hands-On Exercises (5 min)
+## Hands-On Exercises (10 min)
 
 Pick **at least two** exercises — one skill and one hook. If you finish early, try more.
 
@@ -381,6 +381,42 @@ Create a model-invocable skill in .claude/skills/lint-reminder.md that reminds C
 
 Then ask Claude to make a code change and see if it automatically lints afterward.
 
+### Exercise 7: Spawn an Agent Team
+
+> Requires the experimental agent teams feature — you'll enable it as part of this exercise.
+
+Ask Claude to enable agent teams and then use them to work on your project in parallel:
+
+```
+Enable agent teams by adding CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 to the env section in .claude/settings.json.
+```
+
+Once enabled, start a new session and ask Claude to create a team. Adapt this prompt to your project:
+
+```
+Create an agent team with two teammates:
+- One teammate should review all the code we've written so far for bugs, security issues, and missing error handling
+- The other teammate should write tests for the main API endpoints
+
+Have them work in parallel and report back with their findings.
+```
+
+While the team is working:
+- Press **Ctrl+T** to view the shared task list
+- Press **Shift+Up/Down** to select a teammate and send them a direct message
+- Watch how teammates coordinate and divide work independently
+
+Try giving the team a more complex task:
+
+```
+Create an agent team with three teammates:
+- Teammate 1: Add input validation to all API endpoints
+- Teammate 2: Add a new "search" endpoint with filtering
+- Teammate 3: Update the frontend to use the new search endpoint
+
+Coordinate so teammate 3 waits for teammate 2 to finish before starting the frontend work.
+```
+
 ### Bonus: Combine Skills and Hooks
 
 If you finished the exercises above, try combining what you've learned:
@@ -404,5 +440,6 @@ Before we move on, you should have:
 - [ ] Created at least one custom skill and tested it
 - [ ] Set up at least one hook and verified it works
 - [ ] Understood the difference between skills (AI prompts) and hooks (deterministic scripts)
+- [ ] Tried spawning an agent team (or understood how they work)
 
 **Next up:** [Wrap-up & Resources](07-wrap-up.md)

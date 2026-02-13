@@ -1517,28 +1517,28 @@ my-plugin/skills/review/SKILL.md
     </div>
 </section>
 
-<!-- Slide 43: Hands-On — Skills or Hook -->
+<!-- Slide 43: Hands-On — Skills, Hooks & Agent Teams -->
 <section class="slide hands-on-slide" data-section="skills"
-    data-notes="Let participants choose skill or hook. For skills: create .claude/skills/test.md and invoke with /test. For hooks: configure in .claude/settings.json. If someone finishes early, have them do the other option.">
+    data-notes="Participants pick at least two exercises — one skill and one hook. Exercises range from basic skills to agent teams. Walk the room and help. Common issues: skill frontmatter wrong, hook exit codes, agent teams requiring new session. Anyone who finishes early should try the bonus /ship skill + hook combo.">
     <span class="section-label">06 / skills</span>
     <div class="slide-content">
-        <div class="hands-on-badge reveal">// hands-on — 5 min</div>
-        <h2 class="reveal">Create a Skill or Hook</h2>
-        <div class="two-col reveal">
-            <div>
-                <h3>Option A — Skill</h3>
-                <pre><code>Create a skill called "test" in
-.claude/skills/test.md that runs
-tests, diagnoses failures, and
-suggests fixes.</code></pre>
-                <p class="dim" style="font-size:var(--small-size)">Then try: <span class="inline-code">/test</span></p>
-            </div>
-            <div>
-                <h3>Option B — Hook</h3>
-                <pre><code>Add a PostToolUse hook that runs
-Prettier on any file I edit.</code></pre>
-            </div>
-        </div>
+        <div class="hands-on-badge reveal">// hands-on — 10 min</div>
+        <h2 class="reveal">Pick At Least Two Exercises</h2>
+        <table class="reveal" style="font-size:var(--small-size)">
+            <thead>
+                <tr><th>#</th><th>Exercise</th><th>Type</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td><strong>Test runner skill</strong> — create <span class="inline-code">/test</span> to run and diagnose failures</td><td>Skill</td></tr>
+                <tr><td>2</td><td><strong>Explain skill</strong> — <span class="inline-code">/explain server.js</span> using $ARGUMENTS</td><td>Skill</td></tr>
+                <tr><td>3</td><td><strong>Auto-format hook</strong> — Prettier on every file edit</td><td>Hook</td></tr>
+                <tr><td>4</td><td><strong>Block sensitive files</strong> — prevent edits to .env, node_modules</td><td>Hook</td></tr>
+                <tr><td>5</td><td><strong>Notification sound</strong> — play a bell when Claude is done (macOS)</td><td>Hook</td></tr>
+                <tr><td>6</td><td><strong>Model-invocable skill</strong> — auto-lint after code changes</td><td>Skill</td></tr>
+                <tr><td>7</td><td><strong>Agent team</strong> — spawn reviewers + test writers in parallel</td><td>Team</td></tr>
+            </tbody>
+        </table>
+        <p class="reveal dim" style="font-size:var(--small-size)"><strong>Bonus:</strong> Create a <span class="inline-code">/ship</span> skill that runs tests, lints, and commits — plus a hook that blocks git push</p>
     </div>
 </section>
 
