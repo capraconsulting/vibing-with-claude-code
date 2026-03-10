@@ -1,6 +1,6 @@
 # Section 2: First Steps with Claude Code
 
-**Duration:** 20 minutes (5 min presentation + 15 min hands-on)
+**Duration:** 15 minutes (5 min presentation + 10 min hands-on)
 
 ---
 
@@ -42,18 +42,6 @@ Claude Code has three permission modes you cycle through with **Shift+Tab**:
 Press **Shift+Tab** to cycle: Default → Accept Edits → Plan Mode → Default.
 
 **Start in Plan Mode** when beginning a new feature — let Claude think through the approach before making changes. Switch to **Accept Edits** when you trust the direction and want to move faster.
-
-### Choosing a Model
-
-Claude Code can use different models. Switch with `/model`:
-
-| Model | Best for |
-|-------|----------|
-| **Opus** | Complex reasoning, architecture, difficult bugs |
-| **Sonnet** | Daily coding, good balance of speed and quality |
-| **Haiku** | Quick answers, simple tasks |
-
-On Opus, you can also adjust the **effort level** (low/medium/high) using the arrow keys in the `/model` menu. Higher effort = deeper thinking = better results on hard problems.
 
 ### Safety Controls
 
@@ -100,26 +88,34 @@ claude --resume            # Open the session picker
 
 ---
 
-## Hands-On: Build Your Project Foundation (15 min)
+## Hands-On: Build Your Project Foundation (10 min)
 
 ### Step 1: Start with Plan Mode
 
-Launch Claude Code and toggle to Plan Mode (press Shift+Tab twice). Then describe your project:
+Launch Claude Code and toggle to Plan Mode (press Shift+Tab twice). Then describe the project:
 
 ```
-I want to build [your project name].
+I want to build a Daily Dev Log — a personal standup journal.
 
-It should [describe what it does, the data it manages, and the API you thought about in the brainstorm].
+It stores log entries, each with: date, a list of things I worked on ("did"),
+a list of things I'm planning ("doing"), optional blockers, and optional notes.
 
-What tech stack would you recommend, and how should we structure the project? I want both a frontend and a backend API.
+The API needs:
+- GET /api/entries — list all entries (newest first)
+- POST /api/entries — add a new entry
+- GET /api/entries/today — get today's entry
+- GET /api/entries/:id — get a specific entry
+- DELETE /api/entries/:id — delete an entry
+- GET /api/entries/stats — streak, total count, most common blockers
+
+What tech stack would you recommend, and how should we structure the project?
+I want both a backend API and a React frontend.
 ```
 
-Read Claude's plan. Does it make sense? Is it too ambitious? Too simple?
-
-If you want to adjust the plan, stay in Plan Mode and tell Claude:
+Read Claude's plan. Does it make sense? If it seems too complex, stay in Plan Mode and say:
 
 ```
-Let's keep it simpler — just [the core feature]. Skip [anything unnecessary].
+Let's keep it simple — just the core CRUD and a minimal frontend. Skip authentication and anything fancy.
 ```
 
 ### Step 2: Generate the Project
@@ -169,15 +165,10 @@ Before moving on, name your session so you can easily find it later:
 
 ---
 
-## Things to Try
-
-If you finish early, experiment:
+## If You Finish Early
 
 - Ask Claude to explain a file: `Explain what server.ts does`
-- Ask Claude to add a small feature: `Add a button that clears the form`
-- Try `/rewind` to undo a change and try a different prompt
-- Switch to Plan Mode and plan a bigger feature before building it
-- Try `/model sonnet` to switch models and notice the speed difference
+- Try `/rewind` to undo a change and redo it with a different prompt
 
 ---
 

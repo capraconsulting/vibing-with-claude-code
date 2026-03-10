@@ -29,19 +29,18 @@ This is a natural workflow you'll use daily — Claude handles the git ceremony 
 
 ## What You Learned Today
 
-In 90 minutes, you've gone from zero to productive with Claude Code:
+In 60 minutes, you've gone from zero to productive with Claude Code:
 
-1. **Brainstormed** a personal project idea with API and data model thinking
-2. **Built a working prototype** with a backend API and frontend
-3. **Configured your terminal** for the best Claude Code experience
-4. **Mastered permission modes** — Plan, Accept Edits, and Default
-5. **Learned checkpointing** — safely undo changes at any point
-6. **Learned effective prompting** — specific, step-by-step, with images and context
-7. **Set up CLAUDE.md** to give Claude persistent project knowledge
-8. **Built a custom MCP server** and added Playwright for browser automation
-9. **Created custom skills and hooks** for reusable workflows and automation
-10. **Learned about plugins and agent teams** — package extensions and coordinate parallel work
-11. **Committed your work** using Claude's git integration
+1. **Built a full-stack app** — Daily Dev Log with a backend API and React frontend
+2. **Configured your terminal** for the best Claude Code experience
+3. **Mastered permission modes** — Plan, Accept Edits, and Default
+4. **Learned checkpointing** — safely undo changes at any point
+5. **Learned effective prompting** — specific, step-by-step, with images and context
+6. **Set up CLAUDE.md** to give Claude persistent project knowledge
+7. **Built a custom MCP server** — natural language access to your app's data
+8. **Added Playwright** for browser automation and visual verification
+9. **Learned about skills and hooks** — reusable prompts and deterministic automation
+10. **Committed your work** using Claude's git integration
 
 ## Top Tips
 

@@ -1,6 +1,6 @@
 # Section 4: CLAUDE.md & Memory
 
-**Duration:** 10 minutes (5 min presentation + 5 min hands-on)
+**Duration:** 5 minutes (2 min presentation + 3 min hands-on)
 
 ---
 
@@ -79,7 +79,7 @@ Remember that this project uses pnpm, not npm.
 
 ---
 
-## Hands-On: Set Up Your CLAUDE.md (5 min)
+## Hands-On: Set Up Your CLAUDE.md (3 min)
 
 ### Step 1: Generate CLAUDE.md
 
@@ -89,27 +89,17 @@ In your Claude Code session, run:
 /init
 ```
 
-Review the generated file. Does it accurately describe your project?
+Claude scans your project and generates the file. Review it quickly — does it reflect what you built?
 
-### Step 2: Customize It
+### Step 2: Test It
 
-Edit the generated `CLAUDE.md` to add anything project-specific:
-
-```
-Add to the CLAUDE.md that we're using [your specific choices, e.g., "Tailwind for styling" or "no external dependencies"].
-```
-
-Or open `CLAUDE.md` in your editor and make manual edits.
-
-### Step 3: Test It
-
-Start a new conversation (`/clear`) and ask Claude something about your project:
+Start a new conversation (`/clear`) and ask:
 
 ```
 What tech stack is this project using?
 ```
 
-Claude should know the answer from your `CLAUDE.md` without you having to explain it again.
+Claude should answer from `CLAUDE.md` without you re-explaining anything.
 
 ---
 

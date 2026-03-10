@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude Code Workshop — Build Your Own Project in 90 Minutes</title>
+    <title>Claude Code Workshop — Build a Full-Stack App in 60 Minutes</title>
 
     <!-- Fonts: JetBrains Mono for code, DM Sans for body -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -715,7 +715,7 @@
 <nav class="nav-dots" id="navDots"></nav>
 
 <!-- Slide counter -->
-<div class="slide-counter" id="slideCounter">1 / 51</div>
+<div class="slide-counter" id="slideCounter">1 / 46</div>
 
 <!-- Keyboard hint -->
 <div class="keyboard-hint" id="keyboardHint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> to navigate &middot; <kbd>N</kbd> speaker notes</div>
@@ -728,114 +728,72 @@
 
 
 <!-- =============================================
-     SECTION 1: WELCOME & BRAINSTORM
+     SECTION 1: PROJECT INTRO
      ============================================= -->
 
 <!-- Slide 1: Title -->
 <section class="slide title-slide grid-bg" data-section="welcome"
-    data-notes="Welcome everyone! Today you're going to learn Claude Code by building something you actually care about — your own hobby project. By the end of this workshop you'll have a working app with a backend API, a custom MCP server that lets Claude talk to your data, and the skills to keep building with Claude Code after today.">
+    data-notes="Welcome everyone! Today you're going to learn Claude Code by building a Daily Dev Log — a personal standup journal. Everyone builds the same project so we can move fast. By the end you'll have a running full-stack app with a REST API, a custom MCP server that lets Claude query your data, and the skills to keep building after today. All in 60 minutes.">
     <div class="glow-orb" style="top: 30%; left: 50%; transform: translate(-50%, -50%);"></div>
     <div class="slide-content">
         <div class="reveal" style="margin-bottom: clamp(0.5rem, 1vw, 1rem);">
             <span class="prompt"><span class="path">~/workshop</span> <span class="dollar">$</span> claude</span>
         </div>
         <h1 class="reveal">Claude Code Workshop<span class="cursor"></span></h1>
-        <p class="subtitle reveal">Build your own project in 90 minutes</p>
+        <p class="subtitle reveal">Build a full-stack app in 60 minutes</p>
     </div>
 </section>
 
-<!-- Slide 2: Why a Hobby Project? -->
+<!-- Slide 2: Today's Project -->
 <section class="slide" data-section="welcome"
-    data-notes="Research consistently shows that motivation drives learning. If you're building a todo app tutorial you don't care about, you won't push through the tricky parts. But if you're building a workout tracker because you actually track your workouts, you'll engage more deeply. Your project idea carries through the entire workshop.">
-    <span class="section-label">01 / brainstorm</span>
+    data-notes="Everyone builds the same thing today — the Daily Dev Log. This is a personal standup journal: log what you built, what you're planning, and any blockers. It's genuinely useful, has a clean data model, and makes the MCP section really compelling. By the end you'll have a full-stack app you can actually keep using.">
+    <span class="section-label">01 / project</span>
     <div class="slide-content">
-        <h2 class="reveal">Why a Hobby Project?</h2>
+        <h2 class="reveal">Today's Project: Daily Dev Log</h2>
         <ul class="reveal">
-            <li>You learn tools best when you <strong>care about the outcome</strong></li>
-            <li>You'll build something <strong>you actually want</strong></li>
-            <li>Same project through the whole workshop — each section adds depth</li>
+            <li>A personal <strong>standup journal</strong> — log what you built, what you're planning, any blockers</li>
+            <li><strong>Backend REST API</strong> + React frontend</li>
+            <li>Later: an <strong>MCP server</strong> so Claude can query and add entries in natural language</li>
         </ul>
+        <div class="reveal" style="margin-top: var(--content-gap); font-style: italic; color: var(--text-secondary);">
+            "What did I work on last week?" &nbsp;·&nbsp; "Log today's standup" &nbsp;·&nbsp; "Any recurring blockers?"
+        </div>
     </div>
 </section>
 
-<!-- Slide 3: Your Project Should Be -->
+<!-- Slide 3: The Data & API -->
 <section class="slide" data-section="welcome"
-    data-notes="Don't hold back — you'd be surprised how much you can build in 60 minutes with Claude Code. We want a real app: frontend, backend API, data storage. Not just a static HTML page. The key is being concrete.">
-    <span class="section-label">01 / brainstorm</span>
+    data-notes="Keep it simple: one resource, clear CRUD endpoints, plus a stats endpoint. The stats endpoint becomes a great MCP tool. The data model is flat and easy to generate — Claude will scaffold this in about 2 minutes.">
+    <span class="section-label">01 / project</span>
     <div class="slide-content">
-        <h2 class="reveal">Your Project Should Be...</h2>
-        <ul class="reveal">
-            <li><strong>Something you personally want</strong> — motivation matters</li>
-            <li><strong>Ambitious enough</strong> — frontend + backend API + data model</li>
-            <li><strong>Concrete</strong> — "a tracker that does X" not "an app for productivity"</li>
-        </ul>
-    </div>
-</section>
-
-<!-- Slide 4: What Sparks an Idea -->
-<section class="slide" data-section="welcome"
-    data-notes="Take a minute to think about these questions. You don't need to answer all of them — just find the one that sparks something. Common categories: tracking things, planning things, and tools for hobbies.">
-    <span class="section-label">01 / brainstorm</span>
-    <div class="slide-content">
-        <h2 class="reveal">Brainstorm: What Sparks an Idea?</h2>
-        <ul class="reveal">
-            <li>What hobbies do you spend time on outside work?</li>
-            <li>What repetitive task do you wish was automated?</li>
-            <li>What spreadsheet could be a simple app?</li>
-            <li>What would you show off to friends?</li>
-            <li>What side project idea has been in your notes for months?</li>
-        </ul>
-    </div>
-</section>
-
-<!-- Slide 5: Example Ideas -->
-<section class="slide" data-section="welcome"
-    data-notes="These are just starting points. Feel free to pick one or come up with something different. Notice each idea has multiple features — that's intentional. We want projects with enough depth to have interesting data models, API endpoints, and questions an LLM could usefully answer.">
-    <span class="section-label">01 / brainstorm</span>
-    <div class="slide-content">
-        <h2 class="reveal">Example Ideas</h2>
-        <table class="reveal">
-            <thead>
-                <tr><th>Idea</th><th>What it does</th></tr>
-            </thead>
+        <h2 class="reveal">The Data & API</h2>
+        <div class="reveal" style="font-size: var(--small-size);">
+            <strong>Entry:</strong> <span class="inline-code">{ id, date, did[], doing[], blockers[], notes }</span>
+        </div>
+        <table class="reveal" style="font-size: var(--small-size); margin-top: var(--content-gap);">
+            <thead><tr><th>Endpoint</th><th>What it does</th></tr></thead>
             <tbody>
-                <tr><td>Workout tracker</td><td>Log exercises, progress charts, personal records</td></tr>
-                <tr><td>Recipe scaler</td><td>Adjust serving counts, convert units, save favorites</td></tr>
-                <tr><td>Expense splitter</td><td>Group expenses, balances, "who pays whom"</td></tr>
-                <tr><td>Reading list</td><td>Search books via API, ratings, notes, filters</td></tr>
-                <tr><td>Habit tracker</td><td>Daily check-ins, streaks, heatmap calendar</td></tr>
-                <tr><td>Meal planner</td><td>Weekly meals, auto grocery list, scale recipes</td></tr>
+                <tr><td><span class="inline-code">GET /api/entries</span></td><td>List all entries</td></tr>
+                <tr><td><span class="inline-code">POST /api/entries</span></td><td>Add a new entry</td></tr>
+                <tr><td><span class="inline-code">GET /api/entries/today</span></td><td>Get today's entry</td></tr>
+                <tr><td><span class="inline-code">DELETE /api/entries/:id</span></td><td>Delete an entry</td></tr>
+                <tr><td><span class="inline-code">GET /api/entries/stats</span></td><td>Streak, total, top blockers</td></tr>
             </tbody>
         </table>
     </div>
 </section>
 
-<!-- Slide 6: Think Through Your Idea -->
-<section class="slide" data-section="welcome"
-    data-notes="This is the most important brainstorm step. Think about DATA (core entities and relationships), API (CRUD endpoints), and LLM (what would Claude do with access to your data?). If the LLM answer is interesting, you have a good project.">
-    <span class="section-label">01 / brainstorm</span>
-    <div class="slide-content">
-        <h2 class="reveal">Think Through Your Idea</h2>
-        <ol class="reveal">
-            <li><strong>The data</strong> — What "things" does your app manage? How do they relate?</li>
-            <li><strong>The API</strong> — What endpoints would you need? (GET, POST, PUT, DELETE)</li>
-            <li><strong>The LLM angle</strong> — What would you ask Claude if it had access to your data?</li>
-        </ol>
-    </div>
-</section>
-
-<!-- Slide 7: Your Turn — Brainstorm -->
+<!-- Slide 4: Get Ready -->
 <section class="slide hands-on-slide" data-section="welcome"
-    data-notes="Give participants about 10 minutes here. Walk the room and help anyone who's stuck. Common issues: idea too vague, idea too small, can't decide. Anyone ready early can start reading the next section.">
-    <span class="section-label">01 / brainstorm</span>
+    data-notes="One quick task before we start: create the project directory. That's it — no planning needed, we already have the plan.">
+    <span class="section-label">01 / project</span>
     <div class="slide-content">
-        <div class="hands-on-badge reveal">// hands-on — 10 min</div>
-        <h2 class="reveal">Your Turn: Brainstorm</h2>
+        <h2 class="reveal">Get Ready</h2>
         <ol class="reveal">
-            <li>Pick a project idea</li>
-            <li>Think about the data model and API</li>
-            <li>Think about what Claude could do with your data</li>
-            <li>Make sure your project directory is ready: <span class="inline-code">cd ~/my-workshop-project</span></li>
+            <li>Create your project directory:
+                <div style="margin-top: 0.5em;"><span class="inline-code">mkdir ~/daily-dev-log &amp;&amp; cd ~/daily-dev-log</span></div>
+            </li>
+            <li>We'll build it together — starting now</li>
         </ol>
         <p class="reveal" style="font-size:var(--h2-size); text-align:center; margin-top: var(--content-gap);"><a href="https://github.com/capraconsulting/vibing-with-claude-code" style="color:var(--green); text-decoration:none;">github.com/capraconsulting/vibing-with-claude-code</a></p>
     </div>
@@ -846,9 +804,9 @@
      SECTION 2: FIRST STEPS
      ============================================= -->
 
-<!-- Slide 8: Section Title -->
+<!-- Slide 5: Section Title -->
 <section class="slide section-slide grid-bg" data-section="first-steps"
-    data-notes="Now we go from idea to working code. This is the longest hands-on section — 15 minutes of building. The goal: a running app with a frontend and backend API.">
+    data-notes="Now we go from idea to working code. This is the longest hands-on section — 10 minutes of building. The goal: a running Daily Dev Log with a backend API and React frontend.">
     <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
     <div class="slide-content">
         <span class="section-number reveal">Section 02</span>
@@ -884,10 +842,7 @@
             </thead>
             <tbody>
                 <tr><td><strong>Line breaks</strong></td><td><span class="inline-code">\</span> + Enter, or Shift+Enter (iTerm2, Ghostty, Kitty)</td></tr>
-                <tr><td><strong>Shift+Enter setup</strong></td><td>Run <span class="inline-code">/terminal-setup</span> (VS Code, Alacritty, Warp)</td></tr>
-                <tr><td><strong>Vim mode</strong></td><td><span class="inline-code">/vim</span> to toggle keybindings</td></tr>
                 <tr><td><strong>Theme</strong></td><td><span class="inline-code">/config</span> to match your terminal</td></tr>
-                <tr><td><strong>Notifications</strong></td><td>iTerm2 alerts or custom notification hooks</td></tr>
             </tbody>
         </table>
     </div>
@@ -913,28 +868,7 @@
     </div>
 </section>
 
-<!-- Slide 11: Choosing a Model -->
-<section class="slide" data-section="first-steps"
-    data-notes="Opus is the most capable but slower. Sonnet is the best balance for daily work. Haiku is fast and cheap for simple things. On Opus, you also get effort levels.">
-    <span class="section-label">02 / first steps</span>
-    <div class="slide-content">
-        <h2 class="reveal">Choosing a Model</h2>
-        <p class="reveal dim">Use <span class="inline-code">/model</span> to switch:</p>
-        <table class="reveal">
-            <thead>
-                <tr><th>Model</th><th>Best for</th></tr>
-            </thead>
-            <tbody>
-                <tr><td><strong>Opus</strong></td><td>Complex reasoning, architecture, hard bugs</td></tr>
-                <tr><td><strong>Sonnet</strong></td><td>Daily coding, balanced speed and quality</td></tr>
-                <tr><td><strong>Haiku</strong></td><td>Quick answers, simple tasks</td></tr>
-            </tbody>
-        </table>
-        <p class="reveal dim" style="font-size:var(--small-size)">Opus has <strong>effort levels</strong> (low / medium / high) — adjust with arrow keys in <span class="inline-code">/model</span></p>
-    </div>
-</section>
-
-<!-- Slide 12: Safety Controls -->
+<!-- Slide 11: Safety Controls -->
 <section class="slide" data-section="first-steps"
     data-notes="You're always in control. Press Esc immediately if Claude is going wrong. /rewind is like undo. /rename is useful for bookmarking sessions.">
     <span class="section-label">02 / first steps</span>
@@ -971,34 +905,19 @@
     </div>
 </section>
 
-<!-- Slide 15: Sessions -->
-<section class="slide" data-section="first-steps"
-    data-notes="Sessions are persistent. You can close your terminal, reboot, come back tomorrow, and pick up exactly where you left off.">
-    <span class="section-label">02 / first steps</span>
-    <div class="slide-content">
-        <h2 class="reveal">Sessions</h2>
-        <ul class="reveal">
-            <li>Claude <strong>auto-saves</strong> every conversation</li>
-            <li><span class="inline-code">/rename workshop-project</span> — name this session</li>
-            <li><span class="inline-code">/resume</span> — browse and resume previous sessions</li>
-            <li><span class="inline-code">claude --continue</span> — continue most recent session from CLI</li>
-        </ul>
-    </div>
-</section>
-
-<!-- Slide 14: Hands-On — Build Your Project -->
+<!-- Slide 13: Hands-On — Build Daily Dev Log -->
 <section class="slide hands-on-slide" data-section="first-steps"
-    data-notes="Step 1: Plan Mode — describe your project. Step 2: Accept Edits — build it. Step 3: Run it. Step 4: Make a small change. Step 5: Name the session. Walk the room and help. Common issues: Claude writing too much, app doesn't start, wrong framework.">
+    data-notes="The prompt is in the workshop guide — paste it in Plan Mode and let Claude design the stack. Then switch to Accept Edits and let it build. Walk the room. Common issues: Claude writing too much code at once (fix: stay in plan mode longer), app doesn't start (paste the error), wrong framework chosen (redirect in plan mode).">
     <span class="section-label">02 / first steps</span>
     <div class="slide-content">
-        <div class="hands-on-badge reveal">// hands-on — 15 min</div>
-        <h2 class="reveal">Build Your Project</h2>
+        <div class="hands-on-badge reveal">// hands-on — 10 min</div>
+        <h2 class="reveal">Build Daily Dev Log</h2>
         <ol class="reveal">
-            <li><strong>Plan Mode</strong> (Shift+Tab&times;2) &rarr; Describe your project, get a plan</li>
-            <li><strong>Accept Edits</strong> (Shift+Tab) &rarr; Tell Claude to build it</li>
-            <li><strong>Run it</strong> &rarr; Ask Claude to start the app</li>
-            <li><strong>First change</strong> &rarr; Change the title and color scheme</li>
-            <li><span class="inline-code">/rename workshop-project</span> &rarr; Save your session</li>
+            <li><strong>Plan Mode</strong> (Shift+Tab&times;2) &rarr; Paste the project prompt from the guide</li>
+            <li><strong>Accept Edits</strong> (Shift+Tab) &rarr; <span class="inline-code">Let's build it</span></li>
+            <li><strong>Run it</strong> &rarr; <span class="inline-code">How do I run this? Start it up.</span></li>
+            <li><strong>First change</strong> &rarr; Change the title to "Daily Dev Log"</li>
+            <li><span class="inline-code">/rename daily-dev-log</span> &rarr; Save your session</li>
         </ol>
     </div>
 </section>
@@ -1008,7 +927,7 @@
      SECTION 3: EFFECTIVE PROMPTING
      ============================================= -->
 
-<!-- Slide 15: Section Title -->
+<!-- Slide 14: Section Title -->
 <section class="slide section-slide grid-bg" data-section="prompting"
     data-notes="Now that you have a running project, let's talk about how to work with Claude Code effectively. The difference between a frustrating session and a productive one usually comes down to how you prompt.">
     <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
@@ -1146,18 +1065,17 @@ the page looks like.</code></pre>
     </div>
 </section>
 
-<!-- Slide 23: Hands-On — Improve Your Project -->
+<!-- Slide 22: Hands-On — Improve Your Project -->
 <section class="slide hands-on-slide" data-section="prompting"
-    data-notes="Have participants practice these patterns on their own project. Walk the room and look at their prompts. The most common mistake is being too vague. Encourage them to try a worktree if they have time. After a feature or two, remind them to check /cost and /context, then run /compact.">
+    data-notes="Two exercises only — keep it tight. Exercise 1: add form validation with a specific prompt (what, where, how). Exercise 2: delete button with a multi-step numbered prompt. End by running /compact so they see how it works. Walk the room and look at their prompts — the most common mistake is still being too vague.">
     <span class="section-label">03 / prompting</span>
     <div class="slide-content">
-        <div class="hands-on-badge reveal">// hands-on — 10 min</div>
+        <div class="hands-on-badge reveal">// hands-on — 5 min</div>
         <h2 class="reveal">Improve Your Project</h2>
         <ol class="reveal">
-            <li>Write a <strong>specific prompt</strong> with what, where, and how</li>
-            <li>Write a <strong>multi-step prompt</strong> with 2-3 numbered steps</li>
-            <li>Try a <strong>git worktree</strong> — run two Claude sessions in parallel</li>
-            <li>Check <span class="inline-code">/cost</span> and <span class="inline-code">/context</span>, then run <span class="inline-code">/compact</span></li>
+            <li><strong>Specific prompt</strong> — Add form validation: required fields, inline error, disabled submit</li>
+            <li><strong>Multi-step prompt</strong> — Delete button + confirmation dialog in 3 numbered steps</li>
+            <li>Run <span class="inline-code">/compact</span> — notice Claude still remembers the key context</li>
         </ol>
     </div>
 </section>
@@ -1167,7 +1085,7 @@ the page looks like.</code></pre>
      SECTION 4: CLAUDE.md & MEMORY
      ============================================= -->
 
-<!-- Slide 23: Section Title -->
+<!-- Slide 23: Section Title (index 22) -->
 <section class="slide section-slide grid-bg" data-section="claude-md"
     data-notes="So far, everything you've told Claude only lives in the current conversation. CLAUDE.md fixes that — it's a file Claude reads at the start of every session.">
     <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
@@ -1201,11 +1119,11 @@ the page looks like.</code></pre>
     <div class="slide-content">
         <h2 class="reveal">What to Include</h2>
         <pre class="reveal"><code><span style="color:var(--green)"># Project Overview</span>
-Workout tracker with React frontend and Express API.
+Daily Dev Log — personal standup journal with Express API and React frontend.
 
 <span style="color:var(--green)"># Tech Stack</span>
 - React 18 + TypeScript, Vite, Tailwind CSS
-- Express.js backend with SQLite
+- Express.js backend, entries stored in memory / JSON file
 
 <span style="color:var(--green)"># Commands</span>
 - npm run dev — start dev server
@@ -1251,17 +1169,16 @@ Workout tracker with React frontend and Express API.
 
 <!-- Slide 28: Hands-On — Set Up CLAUDE.md -->
 <section class="slide hands-on-slide" data-section="claude-md"
-    data-notes="Quick exercise. Run /init, review and customize, then /clear and ask a question. If Claude answers correctly from CLAUDE.md alone, it's working.">
+    data-notes="Quick exercise. Run /init, skim the generated file, then /clear and verify. Two steps only — we're keeping this tight. If Claude knows the tech stack without re-explanation, it worked.">
     <span class="section-label">04 / claude.md</span>
     <div class="slide-content">
-        <div class="hands-on-badge reveal">// hands-on — 5 min</div>
+        <div class="hands-on-badge reveal">// hands-on — 3 min</div>
         <h2 class="reveal">Set Up CLAUDE.md</h2>
         <ol class="reveal">
-            <li>Run <span class="inline-code">/init</span> to generate your CLAUDE.md</li>
-            <li>Review and customize it — add your project's specifics</li>
-            <li>Run <span class="inline-code">/clear</span> and ask "What tech stack is this project using?"</li>
-            <li>Claude should know the answer from CLAUDE.md alone</li>
+            <li>Run <span class="inline-code">/init</span> — Claude scans your project and generates the file</li>
+            <li>Run <span class="inline-code">/clear</span> and ask: <em>"What tech stack is this project using?"</em></li>
         </ol>
+        <p class="reveal dim">Claude should answer from CLAUDE.md alone — without you re-explaining anything</p>
     </div>
 </section>
 
@@ -1270,7 +1187,7 @@ Workout tracker with React frontend and Express API.
      SECTION 5: MCP SERVERS
      ============================================= -->
 
-<!-- Slide 29: Section Title -->
+<!-- Slide 29: Section Title (index 28) -->
 <section class="slide section-slide grid-bg" data-section="mcp"
     data-notes="MCP — Model Context Protocol — lets Claude connect to external tools and data sources. Think of MCP servers as plugins. We're going to build a custom MCP server and add Playwright.">
     <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
@@ -1296,25 +1213,25 @@ Workout tracker with React frontend and Express API.
     </div>
 </section>
 
-<!-- Slide 32: Express → MCP — The Pattern -->
+<!-- Slide 31: Express → MCP — The Pattern -->
 <section class="slide" data-section="mcp"
-    data-notes="This is the core pattern. Your Express API has routes. Your MCP server wraps each route as a tool with a name, description, and input schema. The description is critical — it's what Claude reads to decide WHEN to use the tool. The input schema tells Claude what parameters to pass. When you talk to Claude, it picks the right tool automatically. You don't need to write this by hand — Claude will generate it for you in the hands-on section. But understanding the pattern helps you review what Claude builds.">
+    data-notes="This is the core pattern. Your Express API has routes. Your MCP server wraps each route as a tool with a name, description, and input schema. The description is critical — it's what Claude reads to decide WHEN to use the tool. You don't need to write this by hand — Claude will generate it for you. But understanding the pattern helps you review what Claude builds.">
     <span class="section-label">05 / mcp</span>
     <div class="slide-content">
         <h2 class="reveal">Express Route → MCP Tool</h2>
         <div class="two-col reveal">
             <div>
                 <p class="code-label">Your Express API</p>
-                <pre><code><span style="color:var(--cyan)">app.get</span>(<span style="color:var(--amber)">"/api/workouts"</span>, ...)
-<span style="color:var(--cyan)">app.post</span>(<span style="color:var(--amber)">"/api/workouts"</span>, ...)
-<span style="color:var(--cyan)">app.get</span>(<span style="color:var(--amber)">"/api/workouts/stats"</span>, ...)</code></pre>
+                <pre><code><span style="color:var(--cyan)">app.get</span>(<span style="color:var(--amber)">"/api/entries"</span>, ...)
+<span style="color:var(--cyan)">app.post</span>(<span style="color:var(--amber)">"/api/entries"</span>, ...)
+<span style="color:var(--cyan)">app.get</span>(<span style="color:var(--amber)">"/api/entries/stats"</span>, ...)</code></pre>
             </div>
             <div>
                 <p class="code-label" style="color:var(--green)">MCP Server wraps each route</p>
-                <pre class="code-good"><code><span style="color:var(--cyan)">server.tool</span>(<span style="color:var(--amber)">"list_workouts"</span>,
-  <span style="color:var(--text-secondary)">"List all logged workouts..."</span>,
+                <pre class="code-good"><code><span style="color:var(--cyan)">server.tool</span>(<span style="color:var(--amber)">"list_entries"</span>,
+  <span style="color:var(--text-secondary)">"List all log entries..."</span>,
   <span style="color:var(--text-muted)">async</span> () => {
-    <span style="color:var(--text-muted)">const</span> res = <span style="color:var(--text-muted)">await</span> <span style="color:var(--cyan)">fetch</span>(<span style="color:var(--amber)">`${API}/workouts`</span>);
+    <span style="color:var(--text-muted)">const</span> res = <span style="color:var(--text-muted)">await</span> <span style="color:var(--cyan)">fetch</span>(<span style="color:var(--amber)">`${API}/entries`</span>);
     <span style="color:var(--text-muted)">return</span> { content: [...] };
   }
 );</code></pre>
@@ -1324,9 +1241,9 @@ Workout tracker with React frontend and Express API.
     </div>
 </section>
 
-<!-- Slide 33: Why Build Your Own? -->
+<!-- Slide 32: Why Build Your Own? -->
 <section class="slide" data-section="mcp"
-    data-notes="Pre-built MCP servers exist for GitHub, databases, web fetching. But the real power is connecting Claude to YOUR app's API. Claude becomes an intelligent assistant for your data.">
+    data-notes="Pre-built MCP servers exist for GitHub, databases, web fetching. But the real power is connecting Claude to YOUR app's API. For Daily Dev Log, this means asking questions like these in natural language — Claude picks the right tool automatically.">
     <span class="section-label">05 / mcp</span>
     <div class="slide-content">
         <h2 class="reveal">Why Build Your Own MCP Server?</h2>
@@ -1337,16 +1254,17 @@ Workout tracker with React frontend and Express API.
             </div>
             <div>
                 <h3 style="color:var(--green)">With your custom MCP server</h3>
-                <pre style="border-color:var(--green-dim)"><code>"What was my heaviest deadlift?"
-"Log a workout: 3x10 bench at 80kg"
-"Compare my reading stats to last year"</code></pre>
+                <pre style="border-color:var(--green-dim)"><code>"What did I work on last week?"
+"Log today: did X, doing Y, blocked by Z"
+"Any recurring blockers this month?"
+"How many days in a row have I logged?"</code></pre>
             </div>
         </div>
         <p class="reveal dim">Claude becomes an <strong>intelligent assistant for your data</strong></p>
     </div>
 </section>
 
-<!-- Slide 32: Good Tool Descriptions -->
+<!-- Slide 33: Good Tool Descriptions -->
 <section class="slide" data-section="mcp"
     data-notes="The tool description is what Claude reads to decide whether to use a tool. Be specific about what the tool does, parameters, return values, and when it should be used. If Claude isn't using your tools correctly, the fix is almost always better descriptions.">
     <span class="section-label">05 / mcp</span>
@@ -1360,12 +1278,12 @@ description: "Gets data"</code></pre>
             </div>
             <div>
                 <p class="code-label" style="color:var(--green)">// good</p>
-                <pre class="code-good"><code>name: "search_workouts"
-description: "Search workouts by
-date range, exercise name, or
-muscle group. Returns exercises
-with sets, reps, weight. Use when
-user asks about training history."</code></pre>
+                <pre class="code-good"><code>name: "search_entries"
+description: "Search log entries by
+date range or keyword. Returns
+matching entries with did/doing/
+blockers fields. Use when user asks
+about their recent work history."</code></pre>
             </div>
         </div>
     </div>
@@ -1407,7 +1325,7 @@ Does the layout look correct?</code></pre>
      SECTION 6: SKILLS, HOOKS & AUTOMATION
      ============================================= -->
 
-<!-- Slide 35: Section Title -->
+<!-- Slide 36: Section Title (index 35) -->
 <section class="slide section-slide grid-bg" data-section="skills"
     data-notes="Skills and hooks are about customization and automation. Skills are reusable prompts you invoke with slash commands. Hooks are shell scripts that run automatically. Plugins bundle these into shareable packages. Agent teams coordinate multiple Claude instances.">
     <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
@@ -1420,21 +1338,41 @@ Does the layout look correct?</code></pre>
 
 <!-- Slide 36: Skills -->
 <section class="slide" data-section="skills"
-    data-notes="Skills are markdown files in .claude/skills/ that act as reusable prompt templates. Two types: user_invocable (you trigger) and model_invocable (Claude auto-uses). Skills can live in project or globally.">
+    data-notes="Skills are markdown files in .claude/skills/. The filename becomes the slash command — review.md becomes /review. The frontmatter marks it as user-invocable. The body is the prompt Claude receives when you invoke it. Simple as that.">
     <span class="section-label">06 / skills</span>
     <div class="slide-content">
         <h2 class="reveal">Skills: Custom Slash Commands</h2>
-        <p class="reveal dim">Create <span class="inline-code">.claude/skills/review.md</span>:</p>
-        <pre class="reveal"><code><span style="color:var(--text-muted)">---</span>
-<span style="color:var(--cyan)">description:</span> Review code for bugs and issues
+        <div class="two-col reveal">
+            <div>
+                <p class="code-label"><span class="inline-code">.claude/skills/review.md</span></p>
+                <pre><code><span style="color:var(--text-muted)">---</span>
 <span style="color:var(--cyan)">user_invocable:</span> true
 <span style="color:var(--text-muted)">---</span>
 
-Review recent changes. For each issue:
-1. File and line number
-2. Description
-3. Suggested fix</code></pre>
-        <p class="reveal dim">Then just type: <span class="inline-code">/review</span></p>
+Review the code changed since the
+last commit. Look for bugs, security
+issues, and missing error handling.
+
+For each problem found, state the
+file and line, explain the issue,
+and suggest a concrete fix.
+
+Only flag things that actually matter.
+Skip style nitpicks.</code></pre>
+            </div>
+            <div style="display:flex; flex-direction:column; gap: var(--content-gap); justify-content:center;">
+                <div>
+                    <p class="dim" style="font-size:var(--small-size); margin-bottom:0.4em;">You type:</p>
+                    <pre class="code-good"><code>/review</code></pre>
+                </div>
+                <div>
+                    <p class="dim" style="font-size:var(--small-size); margin-bottom:0.4em;">Claude receives the prompt from the file and runs it</p>
+                </div>
+                <div>
+                    <p class="dim" style="font-size:var(--small-size)">Filename = command name &nbsp;·&nbsp; Body = the prompt</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -1444,7 +1382,7 @@ Review recent changes. For each issue:
     <span class="section-label">06 / skills</span>
     <div class="slide-content">
         <h2 class="reveal">Hooks: Automation Without AI</h2>
-        <p class="reveal dim">Shell commands that run at lifecycle points — <strong>no AI involved</strong></p>
+        <p class="reveal dim">Shell commands that run at lifecycle points — <strong>no AI involved</strong>. Configure in <span class="inline-code">.claude/settings.json</span></p>
         <div class="two-col reveal">
             <div>
                 <p class="code-label" style="color:var(--green)">// auto-format on edit</p>
@@ -1502,10 +1440,13 @@ Review recent changes. For each issue:
             </div>
             <div>
                 <h3 style="color:var(--green)">Plugin</h3>
-                <pre style="border-color:var(--green-dim)"><code>my-plugin/.claude-plugin/plugin.json
-my-plugin/skills/review/SKILL.md
-&rarr; <span style="color:var(--green)">/my-plugin:review</span></code></pre>
-                <p class="dim" style="font-size:var(--small-size)">Shareable, namespaced, versioned</p>
+                <p class="code-label"><span class="inline-code">my-plugin/.claude-plugin/plugin.json</span></p>
+                <pre style="border-color:var(--green-dim)"><code>{
+  <span style="color:var(--cyan)">"name"</span>: <span style="color:var(--amber)">"my-plugin"</span>,
+  <span style="color:var(--cyan)">"description"</span>: <span style="color:var(--amber)">"Our team's workflows"</span>,
+  <span style="color:var(--cyan)">"version"</span>: <span style="color:var(--amber)">"1.0.0"</span>
+}</code></pre>
+                <p class="dim" style="font-size:var(--small-size)">Skills go in <span class="inline-code">skills/</span> &rarr; invoked as <span style="color:var(--green)">/my-plugin:review</span></p>
             </div>
         </div>
         <p class="reveal dim" style="font-size:var(--small-size)">Test locally: <span class="inline-code">claude --plugin-dir ./my-plugin</span></p>
@@ -1536,28 +1477,32 @@ my-plugin/skills/review/SKILL.md
     </div>
 </section>
 
-<!-- Slide 43: Hands-On — Skills, Hooks & Agent Teams -->
+<!-- Slide 42: Hands-On — Skills & Hooks -->
 <section class="slide hands-on-slide" data-section="skills"
-    data-notes="Participants pick at least two exercises — one skill and one hook. Exercises range from basic skills to agent teams. Walk the room and help. Common issues: skill frontmatter wrong, hook exit codes, agent teams requiring new session. Anyone who finishes early should try the bonus /ship skill + hook combo.">
+    data-notes="Two exercises to try in 2 minutes — pick one or both. Walk the room quickly. More exercises are in the workshop guide for after the session. Common issues: skill frontmatter missing the leading ---, hook exit codes, Prettier not installed globally.">
     <span class="section-label">06 / skills</span>
     <div class="slide-content">
-        <div class="hands-on-badge reveal">// hands-on — 10 min</div>
-        <h2 class="reveal">Pick At Least Two Exercises</h2>
-        <table class="reveal" style="font-size:var(--small-size)">
-            <thead>
-                <tr><th>#</th><th>Exercise</th><th>Type</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>1</td><td><strong>Test runner skill</strong> — create <span class="inline-code">/test</span> to run and diagnose failures</td><td>Skill</td></tr>
-                <tr><td>2</td><td><strong>Explain skill</strong> — <span class="inline-code">/explain server.js</span> using $ARGUMENTS</td><td>Skill</td></tr>
-                <tr><td>3</td><td><strong>Auto-format hook</strong> — Prettier on every file edit</td><td>Hook</td></tr>
-                <tr><td>4</td><td><strong>Block sensitive files</strong> — prevent edits to .env, node_modules</td><td>Hook</td></tr>
-                <tr><td>5</td><td><strong>Notification sound</strong> — play a bell when Claude is done (macOS)</td><td>Hook</td></tr>
-                <tr><td>6</td><td><strong>Model-invocable skill</strong> — auto-lint after code changes</td><td>Skill</td></tr>
-                <tr><td>7</td><td><strong>Agent team</strong> — spawn reviewers + test writers in parallel</td><td>Team</td></tr>
-            </tbody>
-        </table>
-        <p class="reveal dim" style="font-size:var(--small-size)"><strong>Bonus:</strong> Create a <span class="inline-code">/ship</span> skill that runs tests, lints, and commits — plus a hook that blocks git push</p>
+        <div class="hands-on-badge reveal">// hands-on — 2 min</div>
+        <h2 class="reveal">Try One</h2>
+        <div class="two-col reveal">
+            <div>
+                <h3>Skill: /explain</h3>
+                <pre style="border-color:var(--green-dim)"><code>Create a skill called "explain" in
+.claude/skills/explain.md that takes
+$ARGUMENTS as a file or function name
+and explains it in plain English.</code></pre>
+                <p class="dim" style="font-size:var(--small-size); margin-top:0.5em;">Then try: <span class="inline-code">/explain server.js</span></p>
+            </div>
+            <div>
+                <h3>Hook: auto-format</h3>
+                <pre style="border-color:var(--amber)"><code>Add a PostToolUse hook to
+.claude/settings.json that runs
+Prettier on any file Claude edits.
+Only trigger for Write and Edit.</code></pre>
+                <p class="dim" style="font-size:var(--small-size); margin-top:0.5em;">Edit a file — watch Prettier run automatically</p>
+            </div>
+        </div>
+        <p class="reveal dim" style="font-size:var(--small-size)">More exercises (notification sounds, agent teams, /ship) in the workshop guide</p>
     </div>
 </section>
 
@@ -1566,7 +1511,7 @@ my-plugin/skills/review/SKILL.md
      SECTION 7: WRAP-UP
      ============================================= -->
 
-<!-- Slide 40: Section Title -->
+<!-- Slide 43: Section Title (index 42) -->
 <section class="slide section-slide grid-bg" data-section="wrapup"
     data-notes="We're in the home stretch. You've built a project, set up CLAUDE.md, created MCP servers, and made custom skills or hooks. Let's commit everything and talk about what's next.">
     <div class="glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
@@ -1593,18 +1538,17 @@ with a descriptive message.</code></pre>
 
 <!-- Slide 42: What You Built Today -->
 <section class="slide" data-section="wrapup"
-    data-notes="Take a moment to appreciate how much you accomplished in 90 minutes. You went from an empty directory to a full-stack app with an MCP server, custom automation, and everything committed to git. Plus terminal config, checkpointing, plugins, and agent teams.">
+    data-notes="Take a moment to appreciate how much you accomplished in 60 minutes. You went from an empty directory to a full-stack app with an MCP server, custom automation, and everything committed to git.">
     <span class="section-label">07 / wrap-up</span>
     <div class="slide-content">
         <h2 class="reveal">What You Built Today</h2>
         <ol class="reveal" style="font-size: var(--small-size);">
-            <li>Brainstormed a project with data model and API thinking</li>
-            <li>Configured your terminal and built a full-stack app</li>
-            <li>Mastered permission modes, checkpointing, and safety controls</li>
+            <li>Built Daily Dev Log — full-stack app with REST API and React frontend</li>
+            <li>Configured your terminal and mastered permission modes</li>
             <li>Learned effective prompting — specific, step-by-step, images</li>
             <li>Set up CLAUDE.md for persistent project knowledge</li>
             <li>Built a custom MCP server and added Playwright</li>
-            <li>Created skills, hooks, and learned about plugins and agent teams</li>
+            <li>Learned about skills, hooks, plugins, and agent teams</li>
             <li>Committed your work with Claude's git integration</li>
         </ol>
     </div>
@@ -1706,13 +1650,13 @@ with a descriptive message.</code></pre>
 
             // Section metadata for nav dots
             this.sections = [
-                { name: 'welcome', label: '01 Brainstorm', start: 0 },
-                { name: 'first-steps', label: '02 First Steps', start: 7 },
-                { name: 'prompting', label: '03 Prompting', start: 16 },
-                { name: 'claude-md', label: '04 CLAUDE.md', start: 25 },
-                { name: 'mcp', label: '05 MCP', start: 31 },
-                { name: 'skills', label: '06 Skills & Plugins', start: 38 },
-                { name: 'wrapup', label: '07 Wrap-up', start: 45 },
+                { name: 'welcome', label: '01 Project', start: 0 },
+                { name: 'first-steps', label: '02 First Steps', start: 4 },
+                { name: 'prompting', label: '03 Prompting', start: 11 },
+                { name: 'claude-md', label: '04 CLAUDE.md', start: 20 },
+                { name: 'mcp', label: '05 MCP', start: 26 },
+                { name: 'skills', label: '06 Skills & Plugins', start: 33 },
+                { name: 'wrapup', label: '07 Wrap-up', start: 40 },
             ];
 
             this.sectionStarts = new Set(this.sections.map(s => s.start));

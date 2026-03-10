@@ -1,6 +1,6 @@
 # Section 3: Effective Prompting
 
-**Duration:** 15 minutes (5 min presentation + 10 min hands-on)
+**Duration:** 10 minutes (5 min presentation + 5 min hands-on)
 
 ---
 
@@ -174,60 +174,31 @@ Claude can run commands, read output, and course-correct on its own.
 
 ---
 
-## Hands-On: Improve Your Project (10 min)
+## Hands-On: Improve Your Project (5 min)
 
 ### Exercise 1: Write a Specific Prompt
 
-Think of a feature or improvement for your project. Write a prompt that includes:
-- **What** to change
-- **Where** in the code
-- **How** it should behave
+Add a feature to your Daily Dev Log. Write a prompt that includes **what** to change, **where**, and **how** it should behave. For example:
 
-Give it to Claude and see the result.
+```
+In the entry form, add input validation:
+- The "did" and "doing" fields must have at least one item before the form can be submitted
+- Show an inline error message in red if the user tries to submit with empty fields
+- Disable the submit button until the form is valid
+```
 
 ### Exercise 2: Multi-Step Prompt
 
-Write a prompt with 2-3 numbered steps. For example:
+Write a single prompt with numbered steps:
 
 ```
 Please make these changes:
-1. Add a "Delete" button next to each item in the list
-2. Clicking delete should remove the item and update the display
-3. Add a confirmation dialog before deleting
+1. Add a "Delete" button next to each entry in the list
+2. Clicking delete should remove the entry and update the display immediately
+3. Add a brief confirmation before deleting ("Are you sure?")
 ```
 
-### Exercise 3: Parallel Work with Git Worktrees
-
-Create a worktree and run a second Claude Code session in parallel:
-
-```bash
-# Create a worktree for a new feature branch
-git worktree add ../my-project-feature feature/new-feature
-```
-
-Open a new terminal in the worktree directory and start Claude Code:
-
-```bash
-cd ../my-project-feature
-claude
-```
-
-Ask each Claude session to work on something different — for example, one adds a new feature while the other writes tests. When done, clean up:
-
-```bash
-git worktree remove ../my-project-feature
-```
-
-### Exercise 4: Check Your Context
-
-Run these commands and observe what they show:
-
-```
-/cost
-/context
-```
-
-Then run `/compact` and notice how Claude summarizes the session. Continue working — Claude still remembers the key context.
+Then run `/compact` to free up context and notice how Claude still retains the key session context.
 
 ---
 
@@ -250,8 +221,6 @@ Before we move on, you should have:
 
 - [ ] Written at least one specific, detailed prompt
 - [ ] Tried a multi-step prompt
-- [ ] Created a git worktree and run Claude Code in parallel (or understood how it works)
-- [ ] Checked your context usage with `/cost` or `/context`
 - [ ] Used `/compact` at least once
 
 **Next up:** [CLAUDE.md & Memory](04-claude-md.md)

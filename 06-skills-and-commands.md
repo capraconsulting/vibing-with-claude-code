@@ -1,6 +1,6 @@
 # Section 6: Skills, Hooks, Plugins & Agent Teams
 
-**Duration:** 15 minutes (5 min presentation + 10 min hands-on)
+**Duration:** 5 minutes (3 min presentation + 2 min hands-on)
 
 ---
 
@@ -302,134 +302,40 @@ For full details, see the [agent teams docs](https://code.claude.com/docs/en/age
 
 ---
 
-## Hands-On Exercises (10 min)
+## Hands-On Exercises (2 min)
 
-Pick **at least two** exercises — one skill and one hook. If you finish early, try more.
+Pick one to try now. There's more to explore after the workshop.
 
-### Exercise 1: Create a Test Runner Skill
+### Exercise 1: Create a Skill
 
-Create a skill that runs your project's tests and diagnoses failures:
-
-```
-Create a skill called "test" in .claude/skills/test.md that runs the project's tests and if any fail, reads the failing test, diagnoses the issue, and suggests a fix.
-```
-
-Try it:
+Ask Claude to create a skill that explains any file in your project:
 
 ```
-/test
-```
-
-### Exercise 2: Create a Skill with Arguments
-
-Create a skill that accepts input so you can reuse it for different tasks:
-
-```
-Create a skill called "explain" in .claude/skills/explain.md that takes $ARGUMENTS as a file path or function name, finds it in the codebase, and explains what it does in plain English. Include the complexity, inputs/outputs, and any edge cases.
+Create a skill called "explain" in .claude/skills/explain.md that takes $ARGUMENTS
+as a file path or function name, finds it in the codebase, and explains what it
+does in plain English — inputs, outputs, and any edge cases.
 ```
 
 Try it:
 
 ```
 /explain server.js
-/explain handleSubmit
 ```
 
-### Exercise 3: Set Up Auto-Formatting with a Hook
+### Exercise 2: Set Up a Hook
 
-Add a hook that automatically formats files after Claude edits them:
-
-```
-Add a PostToolUse hook to .claude/settings.json that runs Prettier on any file I edit. Only trigger it for Write and Edit tools.
-```
-
-After it's set up, ask Claude to edit a file and watch Prettier run automatically.
-
-### Exercise 4: Block Edits to Sensitive Files
-
-Add a safety guard that prevents Claude from touching files it shouldn't:
+Add a hook that auto-formats files after Claude edits them:
 
 ```
-Add a PreToolUse hook to .claude/settings.json that blocks Write and Edit operations on any file matching .env, package-lock.json, or anything in the node_modules directory. It should print a clear error message explaining why the edit was blocked.
+Add a PostToolUse hook to .claude/settings.json that runs Prettier on any file
+Claude edits. Only trigger it for Write and Edit tools.
 ```
 
-Test it by asking Claude to edit `.env`:
+Make a small edit and watch Prettier run automatically.
 
-```
-Add a new variable MY_VAR=hello to the .env file.
-```
+---
 
-You should see the hook block the edit.
-
-### Exercise 5: Notification Sound on Completion
-
-Set up an audio notification so you know when Claude finishes a long task (macOS only):
-
-```
-Add a Notification hook to .claude/settings.json that plays a sound when Claude needs my attention. Use afplay with a macOS system sound.
-```
-
-Test it by giving Claude a task and switching to another window — you should hear the sound when it's done.
-
-### Exercise 6: Create a Model-Invocable Skill
-
-Create a skill that Claude uses automatically without you having to invoke it:
-
-```
-Create a model-invocable skill in .claude/skills/lint-reminder.md that reminds Claude to run the linter after making changes to any TypeScript or JavaScript file. Set model_invocable to true in the frontmatter.
-```
-
-Then ask Claude to make a code change and see if it automatically lints afterward.
-
-### Exercise 7: Spawn an Agent Team
-
-> Requires the experimental agent teams feature — you'll enable it as part of this exercise.
-
-Ask Claude to enable agent teams and then use them to work on your project in parallel:
-
-```
-Enable agent teams by adding CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 to the env section in .claude/settings.json.
-```
-
-Once enabled, start a new session and ask Claude to create a team. Adapt this prompt to your project:
-
-```
-Create an agent team with two teammates:
-- One teammate should review all the code we've written so far for bugs, security issues, and missing error handling
-- The other teammate should write tests for the main API endpoints
-
-Have them work in parallel and report back with their findings.
-```
-
-While the team is working:
-- Press **Ctrl+T** to view the shared task list
-- Press **Shift+Up/Down** to select a teammate and send them a direct message
-- Watch how teammates coordinate and divide work independently
-
-Try giving the team a more complex task:
-
-```
-Create an agent team with three teammates:
-- Teammate 1: Add input validation to all API endpoints
-- Teammate 2: Add a new "search" endpoint with filtering
-- Teammate 3: Update the frontend to use the new search endpoint
-
-Coordinate so teammate 3 waits for teammate 2 to finish before starting the frontend work.
-```
-
-### Bonus: Combine Skills and Hooks
-
-If you finished the exercises above, try combining what you've learned:
-
-```
-Create a skill called "ship" in .claude/skills/ship.md that:
-1. Runs the test suite
-2. Runs the linter
-3. If everything passes, creates a git commit with a descriptive message
-4. Summarizes what was shipped
-
-Also add a PreToolUse hook that blocks any git push command — we only want to commit locally during the workshop.
-```
+> **More to explore after the workshop:** notification sounds, blocking sensitive files, agent teams, and the `/ship` workflow. See the exercises above in the full 90-minute version for details.
 
 ---
 
@@ -437,9 +343,7 @@ Also add a PreToolUse hook that blocks any git push command — we only want to 
 
 Before we move on, you should have:
 
-- [ ] Created at least one custom skill and tested it
-- [ ] Set up at least one hook and verified it works
-- [ ] Understood the difference between skills (AI prompts) and hooks (deterministic scripts)
-- [ ] Tried spawning an agent team (or understood how they work)
+- [ ] Understood how skills and hooks work (even if just from the presentation)
+- [ ] Tried at least one exercise if time allowed
 
 **Next up:** [Wrap-up & Resources](07-wrap-up.md)

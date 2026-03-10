@@ -26,9 +26,9 @@ node --version
 
 ## 2. Install Claude Code
 
-```bash
-npm install -g @anthropic-ai/claude-code
-```
+You need to have been granted access to Claude Code from Tet Digital.
+If you have been granted access, follow the guide on https://www.notion.so/Claude-Code-Bedrock-30399ecf4db480ee9420cd02405ac4bd.
+Otherwise, team up with another participant.
 
 Verify the installation:
 
@@ -68,16 +68,6 @@ Clean up:
 ```bash
 rm -rf ~/claude-test
 ```
-
-## 5. Optional: Choose Your Editor
-
-Claude Code works great alongside any editor. If you use VS Code or JetBrains IDEs, Claude Code can also run as an extension within your editor. Install whichever setup you prefer:
-
-- **Terminal:** No extra setup needed — just run `claude` in your terminal
-- **VS Code:** Install the "Claude Code" extension from the marketplace
-- **JetBrains:** Install the "Claude Code" plugin from the JetBrains marketplace
-
----
 
 ## Troubleshooting
 
