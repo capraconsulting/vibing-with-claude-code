@@ -30,32 +30,7 @@ Keep the [cheatsheet](cheatsheet.md) open during the workshop for quick lookups.
 
 ## Presentation Slides
 
-Slides are in the `slides/` directory, one file per section. They use [Marp](https://marp.app/) format (markdown with `---` slide separators). Speaker notes are in `<!-- -->` comments.
-
-| Section | Slides |
-|---------|--------|
-| Welcome & Brainstorm | [slides/01-brainstorm.md](slides/01-brainstorm.md) |
-| First Steps | [slides/02-first-steps.md](slides/02-first-steps.md) |
-| Effective Prompting | [slides/03-effective-prompting.md](slides/03-effective-prompting.md) |
-| CLAUDE.md & Memory | [slides/04-claude-md.md](slides/04-claude-md.md) |
-| MCP Servers | [slides/05-mcp-servers.md](slides/05-mcp-servers.md) |
-| Skills, Plugins & Agent Teams | [slides/06-skills-and-commands.md](slides/06-skills-and-commands.md) |
-| Wrap-up & Commit | [slides/07-wrap-up.md](slides/07-wrap-up.md) |
-
-To present, install Marp and run:
-
-```bash
-# Install
-npm install -g @marp-team/marp-cli
-
-# Present with speaker notes (press P for presenter view)
-marp slides/01-brainstorm.md -s
-
-# Export all slides to PDF
-marp slides/ -o slides/output/ --pdf
-
-# Or use the Marp for VS Code extension for live preview
-```
+Slides are in [presentation.html](presentation.html) — a single self-contained file. Open it in any browser to present. Use arrow keys or scroll to navigate, and press **N** to toggle speaker notes.
 
 ---
 
@@ -64,7 +39,7 @@ marp slides/ -o slides/output/ --pdf
 ### Before the Workshop
 
 - Send [00-prerequisites.md](00-prerequisites.md) to participants in advance
-- Test the slides with `marp -s` to verify presenter view and notes work
+- Open [presentation.html](presentation.html) in a browser and verify speaker notes work (press **N**)
 - Make sure you can demo the Daily Dev Log project structure yourself
 
 ### During the Workshop
